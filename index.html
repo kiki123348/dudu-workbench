@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="嘟嘟学习">
+<meta name="theme-color" content="#4a5fc1">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192x192.png">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>嘟嘟暑假学习工作台</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f6fa;--card:#fff;--text:#2d3142;--sub:#8b8fa3;--blue:#4a5fc1;--green:#4caf50;--red:#f56565;--orange:#ff9800;--purple:#9c27b0;--shadow:0 2px 8px rgba(0,0,0,0.06);--shadow-lg:0 8px 32px rgba(0,0,0,0.12);--radius:12px;--radius-sm:8px}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:13px}
+.sidebar{width:72px;background:var(--blue);color:#fff;display:flex;flex-direction:column;align-items:center;padding:16px 0;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:50}
+.sidebar-logo{width:40px;height:40px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:24px;box-shadow:var(--shadow)}
+.sidebar-item{width:100%;padding:10px 0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:rgba(255,255,255,0.85);cursor:pointer;transition:all 0.2s;border-left:3px solid transparent;position:relative}
+.sidebar-item:hover{background:rgba(255,255,255,0.1)}
+.sidebar-item.active{background:rgba(255,255,255,0.18);border-left-color:#fff;color:#fff;font-weight:600}
+.sidebar-del{position:absolute;top:0;right:2px;font-size:9px;color:rgba(255,255,255,0.5);width:14px;height:14px;display:flex;align-items:center;justify-content:center;border-radius:50%;opacity:0;transition:opacity 0.2s}
+.sidebar-edit{position:absolute;top:0;right:16px;font-size:8px;color:rgba(255,255,255,0.5);width:14px;height:14px;display:flex;align-items:center;justify-content:center;border-radius:50%;opacity:0;transition:opacity 0.2s}
+.sidebar-item:hover .sidebar-del,.sidebar-item:hover .sidebar-edit{opacity:1}
+.sidebar-del:hover,.sidebar-edit:hover{background:rgba(255,255,255,0.3);color:#fff}
+.sidebar-add{width:40px;height:40px;border-radius:10px;border:2px dashed rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:20px;color:rgba(255,255,255,0.5);cursor:pointer;margin-top:8px;transition:all 0.2s}
+.sidebar-add:hover{border-color:#fff;color:#fff;background:rgba(255,255,255,0.1)}
+.sidebar-item .icon{font-size:18px}
+.main{margin-left:72px;flex:1;display:flex;flex-direction:column;min-height:100vh;max-height:100vh}
+.main.pvz-page{max-height:100vh}
+.topbar{height:48px;background:#fff;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #eef0f5;position:sticky;top:0;z-index:40}
+.topbar .title{font-size:14px;font-weight:600;flex:1}
+.topbar .user{width:30px;height:30px;background:linear-gradient(135deg,#ff9a9e,#fad0c4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:12px}
+.content{flex:1;overflow-y:auto;padding:16px 20px}
+.content.pvz-page{padding:0}
+.page-title{font-size:18px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.page-subtitle{font-size:11px;color:var(--sub);margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.stat-card{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:center}
+.stat-num{font-size:24px;font-weight:700;color:var(--blue);margin-bottom:2px}
+.stat-label{font-size:11px;color:var(--sub)}
+.stat-card.green .stat-num{color:var(--green)}
+.stat-card.orange .stat-num{color:var(--orange)}
+.subject-section{background:#fff;border-radius:var(--radius);padding:14px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.subject-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #f0f2f5}
+.subject-info{display:flex;align-items:center;gap:10px}
+.subject-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+.icon-yuwen{background:linear-gradient(135deg,#4a5fc1,#6b85d6)}
+.icon-shuxue{background:linear-gradient(135deg,#4caf50,#66bb6a)}
+.icon-yingyu{background:linear-gradient(135deg,#9c27b0,#ba68c8)}
+.icon-docu{background:linear-gradient(135deg,#ff9800,#ffb74d)}
+.subject-name{font-size:15px;font-weight:600}
+.subject-desc{font-size:11px;color:var(--sub);margin-top:1px}
+.subject-actions{display:flex;gap:6px}
+.btn-icon{width:28px;height:28px;border:1px solid #eef0f5;background:#fff;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--sub);transition:all 0.2s;font-size:14px}
+.btn-icon:hover{background:#f5f6fa;color:var(--blue)}
+.task-list{list-style:none}
+.task-item{display:flex;align-items:center;padding:10px 12px;border-radius:8px;margin-bottom:6px;background:#fafbfc;transition:all 0.2s}
+.task-item:hover{background:#f0f4ff}
+.task-item.done{opacity:0.6}
+.task-item.done .task-text{text-decoration:line-through}
+.task-check{width:22px;height:22px;border:2px solid #d0d4dd;border-radius:50%;margin-right:10px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-size:12px}
+.task-item.done .task-check{background:var(--green);border-color:var(--green);color:#fff}
+.task-text{flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.task-meta{font-size:10px;color:var(--sub)}
+.task-streak{background:#fff5e6;color:#ff6b00;padding:1px 6px;border-radius:8px;font-size:10px;margin-left:6px;display:inline-flex;align-items:center;gap:1px;white-space:nowrap}
+.task-actions{display:flex;gap:2px;margin-left:4px}
+.task-action{width:20px;height:20px;background:transparent;border:none;cursor:pointer;color:var(--sub);font-size:12px;border-radius:3px;display:flex;align-items:center;justify-content:center}
+.task-action:hover{background:#eef0f5;color:var(--red)}
+.add-task{display:flex;align-items:center;justify-content:center;padding:7px;border:1.5px dashed #d0d4dd;border-radius:8px;color:var(--sub);cursor:pointer;font-size:11px;transition:all 0.2s;margin-top:2px}
+.add-task:hover{border-color:var(--blue);color:var(--blue);background:#f0f4ff}
+.docu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.docu-card{background:#fafbfc;border-radius:10px;padding:12px;cursor:pointer;transition:all 0.2s;position:relative;border:1px solid transparent}
+.docu-card:hover{background:#fff8e6;border-color:var(--orange);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.docu-thumb{width:100%;height:80px;background:linear-gradient(135deg,#ff9800,#ffb74d);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px;color:#fff}
+.docu-name{font-size:12px;font-weight:500;margin-bottom:2px}
+.docu-meta{font-size:10px;color:var(--sub)}
+.docu-delete{position:absolute;top:6px;right:6px;width:18px;height:18px;background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:10px}
+.docu-card:hover .docu-delete{display:flex}
+.error-card{background:#fff;border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:10px}
+.error-subject{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.error-info{flex:1}
+.error-q{font-size:12px;font-weight:500;margin-bottom:2px}
+.error-a{font-size:11px;color:var(--green);margin-bottom:1px}
+.error-reason{font-size:10px;color:var(--sub);line-height:1.4}
+.error-date{font-size:10px;color:var(--sub);margin-top:2px}
+.english-card{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.english-word{font-size:28px;font-weight:700;color:var(--purple);margin-bottom:2px}
+.english-phonetic{font-size:12px;color:var(--sub);margin-bottom:8px}
+.english-meaning{font-size:13px;margin-bottom:10px;line-height:1.5}
+.english-example{background:#fafbfc;padding:8px 12px;border-radius:var(--radius-sm);font-size:11px;line-height:1.6;border-left:3px solid var(--purple)}
+.english-nav{display:flex;gap:6px;justify-content:center;margin-top:10px}
+.word-list{display:flex;flex-wrap:wrap;gap:6px}
+.word-chip{padding:4px 10px;background:#fafbfc;border-radius:16px;font-size:11px;cursor:pointer;border:1px solid #eef0f5;transition:all 0.2s}
+.word-chip:hover{background:#f3e5f5;border-color:var(--purple);color:var(--purple)}
+.word-chip.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.plan-card{background:#fff;border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:flex-start}
+.plan-date{min-width:40px;text-align:center}
+.plan-day{font-size:10px;color:var(--sub)}
+.plan-dnum{font-size:22px;font-weight:700;color:var(--blue);line-height:1.1}
+.plan-detail{flex:1}
+.plan-title{font-size:12px;font-weight:600;margin-bottom:2px}
+.plan-desc{font-size:11px;color:var(--sub);line-height:1.4}
+.chart-section{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.chart-title{font-size:13px;font-weight:600;margin-bottom:10px}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.week-day{font-size:10px;color:var(--sub);margin-bottom:4px}
+.week-dot{width:22px;height:22px;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:10px}
+.week-dot.done{background:var(--green);color:#fff}
+.week-dot.miss{background:#fee;color:var(--red)}
+.week-dot.empty{background:#f0f2f5;color:var(--sub)}
+.heatmap-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.heatmap-cell{aspect-ratio:1;border-radius:3px;background:#f0f2f5}
+.heatmap-cell.l1{background:#c8e6c9}.heatmap-cell.l2{background:#81c784}.heatmap-cell.l3{background:#4caf50}.heatmap-cell.l4{background:#2e7d32}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:none;align-items:center;justify-content:center;z-index:200}
+.modal-mask.show{display:flex}
+.modal{background:#fff;border-radius:var(--radius);padding:18px;width:380px;max-width:90%;box-shadow:var(--shadow-lg);max-height:85vh;overflow-y:auto}
+.modal h3{font-size:16px;margin-bottom:12px}
+.form-group{margin-bottom:10px}
+.form-group label{display:block;font-size:11px;color:var(--sub);margin-bottom:4px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:8px 10px;border:1px solid #e0e3e9;border-radius:6px;font-size:13px;font-family:inherit;transition:border-color 0.2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--blue)}
+.form-group textarea{min-height:60px;resize:vertical}
+.modal-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:14px}
+.btn{padding:6px 14px;border-radius:6px;border:none;cursor:pointer;font-size:12px;transition:all 0.2s}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#3d51b3}
+.btn-secondary{background:#f0f2f5;color:var(--text)}.btn-secondary:hover{background:#e0e3e9}
+.btn-danger{background:var(--red);color:#fff}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:rgba(0,0,0,0.85);color:#fff;padding:8px 16px;border-radius:6px;font-size:12px;z-index:300;transition:transform 0.3s}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.fab{position:fixed;right:24px;bottom:24px;width:44px;height:44px;background:var(--blue);color:#fff;border-radius:50%;border:none;cursor:pointer;font-size:24px;box-shadow:var(--shadow-lg);display:flex;align-items:center;justify-content:center;z-index:100;transition:all 0.2s}
+.fab:hover{transform:scale(1.1)}
+.empty{text-align:center;padding:16px;color:var(--sub);font-size:12px}
+
+/* 大卡片 */
+.subject-big-card{background:#fff;border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:all 0.2s;position:relative}
+.subject-big-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.subject-big-card .sbc-actions{position:absolute;top:6px;right:6px;display:flex;gap:3px;opacity:0;transition:opacity 0.2s}
+.subject-big-card:hover .sbc-actions{opacity:1}
+.sbc-edit,.sbc-del{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;background:#f0f2f5;transition:all 0.15s}
+.sbc-edit:hover{background:#e3f2fd}
+.sbc-del{background:#ffebee}.sbc-del:hover{background:#ffcdd2}
+.subject-big-card.docu{background:linear-gradient(135deg,#fff8e1,#fff3e0)}
+.sbc-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sbc-name{font-size:15px;font-weight:700;color:var(--text)}
+.sbc-progress{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sbc-bar{flex:1;height:6px;background:#f0f2f5;border-radius:3px;overflow:hidden}
+.sbc-fill{height:100%;border-radius:3px;transition:width 0.4s}
+.subject-big-card:has(.icon-yuwen) .sbc-fill{background:linear-gradient(90deg,#4a5fc1,#6b85d6)}
+.subject-big-card:has(.icon-shuxue) .sbc-fill{background:linear-gradient(90deg,#4caf50,#66bb6a)}
+.subject-big-card:has(.icon-yingyu) .sbc-fill{background:linear-gradient(90deg,#9c27b0,#ba68c8)}
+.subject-big-card.docu .sbc-fill{background:linear-gradient(90deg,#ff9800,#ffb74d)}
+.sbc-pct{font-size:11px;font-weight:700;color:var(--sub);min-width:28px}
+.sbc-stats{display:flex;justify-content:space-between;font-size:10px;color:var(--sub);margin-bottom:6px}
+.sbc-preview{display:flex;flex-wrap:wrap;gap:3px}
+.sbc-tag{padding:2px 6px;background:#f5f6fa;border-radius:8px;font-size:10px;color:var(--text)}
+.sbc-tag.done{background:#e8f5e9;color:#388e3c;text-decoration:line-through}
+
+/* ====== 奖励中心样式 ====== */
+.reward-sun-card{background:linear-gradient(135deg,#fff8e1,#fff3e0);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.reward-sun-icon{font-size:36px}
+.reward-sun-num{font-size:32px;font-weight:700;color:#5D4037}
+.reward-sun-label{font-size:12px;color:var(--sub);margin-left:auto}
+.reward-section{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+.reward-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.reward-header-left{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700}
+.reward-header-icon{font-size:18px}
+.reward-count{font-size:11px;color:var(--sub);background:#f0f2f5;padding:2px 8px;border-radius:10px}
+.reward-list{display:flex;flex-direction:column;gap:8px}
+.reward-item{display:flex;align-items:center;gap:10px;padding:10px;background:#fafbfc;border-radius:10px;transition:all 0.2s;position:relative}
+.reward-item:hover{background:#f5f6fa}
+.reward-actions{display:flex;gap:2px;margin-right:6px}
+.reward-edit,.reward-del{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;background:#f0f2f5;flex-shrink:0}
+.reward-edit:hover{background:#e3f2fd}
+.reward-del{background:#ffebee}.reward-del:hover{background:#ffcdd2}
+.reward-emoji{font-size:28px;width:40px;text-align:center}
+.reward-info{flex:1}
+.reward-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.reward-cost{font-size:12px;color:#f57c00;font-weight:700}
+.reward-cost .sun-icon{font-size:10px}
+.reward-btn{padding:6px 14px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.reward-btn:hover{background:#3d51b3}
+.reward-btn.disabled{background:#e0e3e9;color:var(--sub);cursor:not-allowed}
+.reward-add-bar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:10px 24px;background:var(--blue);color:#fff;border-radius:24px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:var(--shadow-lg);transition:all 0.2s;z-index:50}
+.reward-add-bar:hover{background:#3d51b3;transform:translateX(-50%) scale(1.05)}
+.reward-add-icon{font-size:18px}
+
+/* ====== PVZ 新样式 ====== */
+.pvz-wrap{display:flex;flex-direction:column;gap:10px;padding:16px 20px}
+.pvz-top-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pvz-card{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:center}
+.pvz-card .pvz-card-icon{font-size:28px;margin-bottom:4px}
+.pvz-card .pvz-card-num{font-size:28px;font-weight:700;color:#5D4037}
+.pvz-card .pvz-card-label{font-size:11px;color:var(--sub);margin-top:2px}
+.pvz-card.sun{background:linear-gradient(135deg,#fff8e1,#fff3e0)}
+.pvz-card.streak{background:linear-gradient(135deg,#ffebee,#fce4ec)}
+.pvz-card.streak .pvz-card-num{color:var(--red)}
+.pvz-garden{background:linear-gradient(180deg,#81c784 0%,#66bb6a 100%);border-radius:var(--radius);padding:10px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.pvz-garden-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 4px}
+.pvz-garden-header .left,.pvz-garden-header .right{display:flex;align-items:center;gap:4px;font-size:11px;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,0.3)}
+.pvz-grid{display:grid;grid-template-columns:40px repeat(7,1fr) 40px;gap:4px}
+.pvz-grid-row{display:contents}
+.pvz-grid-base{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.pvz-grid-base .base-icon{font-size:20px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))}
+.pvz-grid-base .base-label{font-size:8px;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,0.3);text-align:center;line-height:1}
+.pvz-grid-cell{background:rgba(255,255,255,0.25);border-radius:6px;display:flex;align-items:center;justify-content:center;aspect-ratio:1;position:relative;cursor:pointer;transition:all 0.2s;border:1.5px dashed rgba(255,255,255,0.4);font-size:20px}
+.pvz-grid-cell:hover{background:rgba(255,255,255,0.4);border-color:#FFD54F}
+.pvz-grid-cell.has-plant{background:rgba(255,255,255,0.45);border-style:solid;border-color:rgba(255,255,255,0.5);animation:plantBounce 2.5s ease-in-out infinite;cursor:default}
+.pvz-grid-cell.has-plant:hover{transform:scale(1.1);animation:none}
+.pvz-grid-cell .plant-label{position:absolute;bottom:1px;font-size:7px;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,0.5);white-space:nowrap}
+.pvz-grid-zombie{display:flex;align-items:center;justify-content:center;position:relative}
+.pvz-grid-zombie .zombie-icon{font-size:24px;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.4));animation:zombieRage 0.5s ease-in-out infinite}
+.pvz-grid-zombie .zombie-label{position:absolute;top:-10px;font-size:8px;background:rgba(244,67,54,0.9);color:#fff;padding:0 3px;border-radius:4px;white-space:nowrap;font-weight:700}
+.pvz-grid-zombie.frozen .zombie-icon{opacity:0.5;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.4)) brightness(1.4) saturate(0.3)}
+.pvz-garden-footer{display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:0 4px;font-size:10px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.3)}
+.pvz-garden-footer .total{font-weight:700}
+.pvz-energy-section{background:#fff;border-radius:var(--radius);padding:12px;box-shadow:var(--shadow)}
+.pvz-energy-title{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.pvz-energy-title .add-btn{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
+.pvz-energy-list{display:flex;flex-direction:column;gap:4px}
+.pvz-energy-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f2f5;font-size:12px}
+.pvz-energy-row:last-child{border-bottom:none}
+.pvz-energy-row .name{color:var(--text)}
+.pvz-energy-row .val{font-weight:700;color:var(--green);font-size:13px}
+.pvz-energy-total{display:flex;align-items:center;justify-content:space-between;padding:8px 0;margin-top:4px;border-top:2px solid #e0e3e9;font-size:13px;font-weight:700}
+.pvz-energy-total .total-label{color:var(--sub)}
+.pvz-energy-total .total-val{color:var(--green);font-size:15px}
+.pvz-shop-btn{position:fixed;right:16px;bottom:16px;width:48px;height:48px;background:linear-gradient(135deg,#ff9800,#f57c00);color:#fff;border-radius:50%;border:none;cursor:pointer;font-size:20px;box-shadow:var(--shadow-lg);display:flex;align-items:center;justify-content:center;z-index:100;transition:all 0.2s}
+.pvz-shop-btn:hover{transform:scale(1.1)}
+.pvz-shop-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px}
+.pvz-shop-item{background:#fafbfc;border-radius:8px;padding:8px;text-align:center;cursor:pointer;transition:all 0.2s;border:1.5px solid transparent}
+.pvz-shop-item:hover{border-color:#FFD54F;transform:translateY(-2px);box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.pvz-shop-item.locked{opacity:0.4;cursor:not-allowed;filter:grayscale(0.5)}
+.pvz-shop-item.locked:hover{transform:none;border-color:transparent;box-shadow:none}
+.pvz-shop-item.owned{background:rgba(200,230,201,0.3);border-color:#4caf50}
+.pvz-shop-emoji{font-size:28px;margin-bottom:2px}
+.pvz-shop-name{font-size:10px;font-weight:600;color:var(--text);margin-bottom:1px}
+.pvz-shop-desc{font-size:8px;color:var(--sub);line-height:1.2;margin-bottom:2px}
+.pvz-shop-cost{font-size:10px;font-weight:700;color:#f57c00}
+@keyframes plantBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes zombieRage{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+/* 视力训练 */
+.vision-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.vision-card{background:#fff;border-radius:12px;padding:16px;text-align:center;cursor:pointer;box-shadow:var(--shadow);transition:all 0.2s;border:2px solid transparent;position:relative}
+.vision-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
+.vision-icon{font-size:36px;margin-bottom:6px}
+.vision-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
+.vision-desc{font-size:11px;color:var(--sub);margin-bottom:4px}
+.vision-time{font-size:10px;color:var(--blue);font-weight:600}
+.vision-card-actions{position:absolute;top:4px;right:4px;display:flex;gap:2px;opacity:0;transition:opacity 0.2s}
+.vision-card:hover .vision-card-actions{opacity:1}
+.vision-edit,.vision-del{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;background:#f0f2f5}
+.vision-del{background:#ffebee}
+.vision-timer{margin-top:16px}
+.vision-active{background:#fff;border-radius:var(--radius);padding:24px;text-align:center;box-shadow:var(--shadow-lg);animation:fadeIn 0.3s}
+.vision-active-icon{font-size:48px;margin-bottom:8px}
+.vision-active-name{font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px}
+.vision-active-inst{font-size:13px;color:var(--sub);margin-bottom:16px;line-height:1.6}
+.vision-active-desc{font-size:14px;color:var(--green);font-weight:600;margin-bottom:16px}
+.vision-countdown{font-size:36px;font-weight:800;color:var(--blue);margin-bottom:16px}
+.vision-cancel,.vision-done{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:8px 24px;font-size:14px;cursor:pointer;margin-top:8px}
+.vision-cancel{background:#e0e3e9;color:var(--sub)}
+@keyframes fadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">📚</div>
+  <div id="sidebarNav"></div>
+</aside>
+
+<main class="main">
+  <div class="topbar"><div class="title" id="topTitle">嘟嘟暑假学习工作台</div><div class="user">嘟</div></div>
+  <div class="content" id="content"></div>
+</main>
+
+<button class="fab" id="fab" title="添加">+</button>
+
+<!-- 任务弹窗 -->
+<div class="modal-mask" id="taskModal"><div class="modal"><h3 id="modalTitle">添加任务</h3>
+  <div class="form-group"><label>任务名称</label><input type="text" id="taskName" placeholder="例如：背诵古诗两首"></div>
+  <div class="form-group"><label>备注</label><input type="text" id="taskNote" placeholder="例如：每天30分钟"></div>
+  <div class="form-group"><label>学科</label><select id="taskSubject"></select></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('taskModal')">取消</button><button class="btn btn-primary" id="modalSaveBtn">保存</button></div></div></div>
+
+<!-- 纪录片弹窗 -->
+<div class="modal-mask" id="docuModal"><div class="modal"><h3>添加纪录片</h3>
+  <div class="form-group"><label>名称</label><input type="text" id="docuName"></div>
+  <div class="form-group"><label>类型</label><input type="text" id="docuTheme"></div>
+  <div class="form-group"><label>笔记</label><textarea id="docuNotes"></textarea></div>
+  <div class="form-group"><label>评分</label><select id="docuRating"><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option><option value="3">⭐⭐⭐</option><option value="2">⭐⭐</option><option value="1">⭐</option></select></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('docuModal')">取消</button><button class="btn btn-primary" onclick="saveDocu()">保存</button></div></div></div>
+
+<div class="modal-mask" id="docuDetailModal"><div class="modal" style="width:560px"><h2 id="docuDetailName"></h2><div class="meta" id="docuDetailMeta" style="color:var(--sub);font-size:12px;margin-bottom:16px"></div><div id="docuDetailNotes" style="background:#fafbfc;border-radius:8px;padding:14px;line-height:1.7;font-size:14px;white-space:pre-wrap"></div><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('docuDetailModal')">关闭</button></div></div></div>
+
+<!-- 错题弹窗 -->
+<div class="modal-mask" id="errorModal"><div class="modal"><h3 id="errorModalTitle">添加错题</h3>
+  <div class="form-group"><label>学科</label><select id="errorSubject"></select></div>
+  <div class="form-group"><label>题目</label><input type="text" id="errorQuestion"></div>
+  <div class="form-group"><label>正确答案</label><input type="text" id="errorAnswer"></div>
+  <div class="form-group"><label>错误原因</label><textarea id="errorReason"></textarea></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('errorModal')">取消</button><button class="btn btn-primary" id="errorSaveBtn">保存</button></div></div></div>
+
+<!-- 计划弹窗 -->
+<div class="modal-mask" id="planModal"><div class="modal"><h3 id="planModalTitle">添加计划</h3>
+  <div class="form-group"><label>日期</label><input type="date" id="planDate"></div>
+  <div class="form-group"><label>标题</label><input type="text" id="planTitle"></div>
+  <div class="form-group"><label>描述</label><textarea id="planDesc"></textarea></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('planModal')">取消</button><button class="btn btn-primary" id="planSaveBtn">保存</button></div></div></div>
+
+<!-- 植物商店弹窗 -->
+<div class="modal-mask" id="shopModal"><div class="modal" style="width:480px"><h3>🏪 植物商店</h3>
+  <div id="shopContent"></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('shopModal')">关闭</button></div></div></div>
+
+<!-- 植物详情弹窗 -->
+<div class="modal-mask" id="plantDetailModal"><div class="modal" style="width:380px;text-align:center">
+  <div style="font-size:60px" id="plantDetailEmoji"></div>
+  <h3 id="plantDetailName" style="margin:8px 0"></h3>
+  <p style="color:var(--sub);font-size:13px;margin-bottom:12px" id="plantDetailDesc"></p>
+  <div class="modal-actions" style="justify-content:center"><button class="btn btn-secondary" onclick="closeModal('plantDetailModal')">知道了</button></div></div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ========== 数据 ==========
+const K='dudu_workbench_v4';
+const def={
+  sidebarItems:[
+    {id:'workbench',icon:'📖',name:'工作台',builtin:true},
+    {id:'reward',icon:'🎁',name:'奖励中心',builtin:true},
+    {id:'pvz',icon:'🌻',name:'植物大战',builtin:true},
+    {id:'vision',icon:'👁️',name:'视力训练',builtin:true},
+    {id:'stats',icon:'📊',name:'打卡统计',builtin:true},
+    {id:'english',icon:'🔤',name:'每日英语',builtin:true},
+    {id:'plan',icon:'📅',name:'近期计划',builtin:true}
+  ],
+  sidebarNextId:1,
+  subjects:{
+    yuwen:{name:'语文',icon:'📖',iconClass:'icon-yuwen',desc:'每天30分钟·提升语感',tasks:[
+      {id:1,text:'新古诗5遍，复习一篇',note:'连续1天',done:true,streak:1},
+      {id:2,text:'377晨读',note:'连续0天',done:false,streak:0},
+      {id:3,text:'成语故事/好词好句',note:'连续0天',done:false,streak:0},
+      {id:4,text:'控笔训练+写字',note:'连续0天',done:false,streak:0},
+      {id:5,text:'拼音拼读及练习题',note:'连续0天',done:false,streak:0}
+    ]},
+    shuxue:{name:'数学',icon:'🔢',iconClass:'icon-shuxue',desc:'每天20分钟·五分钟计算题',tasks:[
+      {id:6,text:'5分钟计时不计量（20以内）',note:'连续0天',done:false,streak:0},
+      {id:7,text:'数感星球',note:'连续0天',done:false,streak:0},
+      {id:8,text:'思维练习题',note:'连续0天',done:false,streak:0}
+    ]},
+    yingyu:{name:'英语',icon:'🔤',iconClass:'icon-yingyu',desc:'周期1项·大量输入',tasks:[
+      {id:9,text:'每日英语磨耳朵',note:'连续0天',done:false,streak:0},
+      {id:10,text:'RAZ分级阅读1篇',note:'连续0天',done:false,streak:0}
+    ]}
+  },
+  subjectOrder:['yuwen','shuxue','yingyu'],
+  subjectNextId:11,
+  docu:[{id:101,name:'蓝色星球II',theme:'自然/海洋',rating:5,notes:'画面震撼，记录了海洋生物的生存智慧。',date:'2026-07-20'}],
+  errors:[{id:201,subject:'shuxue',question:'15+8=?',answer:'23',reason:'忘记进位，算成13',date:'2026-07-25'}],
+  englishIdx:0,
+  plans:[{id:401,date:'2026-07-30',title:'去图书馆借书',desc:'借3本暑假阅读书目'}],
+  pvz:{
+    sun:250,coins:5,baseHealth:3,
+    plants:[],
+    zombies:[
+      {id:'z1',name:'读报僵尸',lane:'yuwen',position:1,emoji:'🧟',frozen:false},
+      {id:'z2',name:'路障僵尸',lane:'shuxue',position:1,emoji:'🧟‍♂️',frozen:false},
+      {id:'z3',name:'舞王僵尸',lane:'yingyu',position:1,emoji:'🧟‍♀️',frozen:false}
+    ],
+    achievements:[],
+    todayChecked:false,lastCheckDate:'',
+    streakDays:0
+  },
+  visions:[
+    {id:1,icon:'🔭',name:'远眺放松',desc:'看远处物体',duration:300},
+    {id:2,icon:'🔄',name:'眼球转动',desc:'上下左右转动眼球',duration:30},
+    {id:3,icon:'💆',name:'眼部按摩',desc:'轻柔按摩眼周',duration:300},
+    {id:4,icon:'👀',name:'远近交替',desc:'远近焦点来回切换',duration:60},
+    {id:5,icon:'🧊',name:'冷敷放松',desc:'冷毛巾敷眼睛',duration:300},
+    {id:6,icon:'♾️',name:'8字追踪',desc:'用眼画8字轨迹',duration:30}
+  ],
+  visionNextId:7,
+  rewards:[
+    {id:1,emoji:'🍦',name:'吃冰淇淋',cost:30},
+    {id:2,emoji:'🎬',name:'看一集动画片',cost:50},
+    {id:3,emoji:'🎡',name:'去公园玩',cost:80},
+    {id:4,emoji:'🧸',name:'买一个小玩具',cost:150},
+    {id:5,emoji:'🎪',name:'去游乐园',cost:300}
+  ],
+  rewardNextId:6
+};
+
+const PLANT_DEFS=[
+  {type:'sunflower',emoji:'🌻',name:'向日葵',cost:100,desc:'每天额外+20☀️',unlock:0,effect:'daily_sun',effectVal:20},
+  {type:'sunshroom',emoji:'🍄',name:'阳光菇',cost:150,desc:'每天额外+10☀️',unlock:3,effect:'daily_sun',effectVal:10},
+  {type:'peashooter',emoji:'🌿',name:'豌豆射手',cost:200,desc:'僵尸前进速度减半',unlock:5,effect:'slow_zombie'},
+  {type:'kernelpult',emoji:'🌽',name:'玉米投手',cost:250,desc:'每天随机获得金币',unlock:8,effect:'random_coin'},
+  {type:'wallnut',emoji:'🥔',name:'坚果墙',cost:300,desc:'保护植物不被吃掉1次',unlock:10,effect:'shield'},
+  {type:'iceShroom',emoji:'🧊',name:'寒冰菇',cost:350,desc:'冻结一只僵尸1天',unlock:12,effect:'freeze'},
+  {type:'jalapeno',emoji:'🌶️',name:'辣椒',cost:400,desc:'当天未完成任务免疫1次',unlock:15,effect:'immune'},
+  {type:'cherryBomb',emoji:'🍒',name:'樱桃炸弹',cost:500,desc:'击退所有僵尸3格！',unlock:20,effect:'push_all'}
+];
+
+const ACHIEVEMENTS=[
+  {id:'master',name:'🌟植物大师',desc:'拥有5种植物',icon:'🌿'},
+  {id:'streak',name:'🔥连击达人',desc:'连续7天全勤',icon:'🔥'},
+  {id:'defense',name:'🛡️防线固守',desc:'僵尸从未进入基地',icon:'🏰'},
+  {id:'rich',name:'💰阳光富翁',desc:'攒够1000阳光',icon:'💰'}
+];
+
+const engWords=[
+  {w:'apple',p:'/ˈæp.əl/',m:'苹果',e:'I eat an apple every day. 我每天吃一个苹果。'},
+  {w:'beautiful',p:'/ˈbjuː.tɪ.fəl/',m:'美丽的',e:'The sunset is so beautiful! 日落真美！'},
+  {w:'courage',p:'/ˈkɜːr.ɪdʒ/',m:'勇气',e:'It takes courage to try new things. 尝试新事物需要勇气。'},
+  {w:'discover',p:'/dɪˈskʌv.ər/',m:'发现',e:"Let's discover something new today. 今天我们来发现新事物吧。"},
+  {w:'elephant',p:'/ˈel.ɪ.fənt/',m:'大象',e:'The elephant is the largest land animal. 大象是最大的陆地动物。'},
+  {w:'family',p:'/ˈfæm.əl.i/',m:'家庭',e:'Family is the most important thing. 家庭是最重要的。'},
+  {w:'garden',p:'/ˈɡɑːr.dən/',m:'花园',e:'We planted flowers in the garden. 我们在花园里种了花。'},
+  {w:'happy',p:'/ˈhæp.i/',m:'快乐的',e:'I feel happy when I learn new words. 学新单词时我感到快乐。'},
+  {w:'island',p:'/ˈaɪ.lənd/',m:'岛屿',e:'They explored a small island. 他们探索了一个小岛。'},
+  {w:'journey',p:'/ˈdʒɜːr.ni/',m:'旅程',e:'Learning is a lifelong journey. 学习是一生的旅程。'}
+];
+
+function load(){
+  try{
+    const r=localStorage.getItem(K);
+    if(r){
+      const data=JSON.parse(r);
+      if(!data.visions) data.visions=def.visions;
+      if(!data.visionNextId) data.visionNextId=def.visionNextId;
+      if(!data.subjectOrder) data.subjectOrder=Object.keys(data.subjects);
+      if(!data.subjectNextId) data.subjectNextId=11;
+      if(!data.sidebarItems) data.sidebarItems=def.sidebarItems;
+      if(!data.sidebarNextId) data.sidebarNextId=def.sidebarNextId;
+      if(!data.rewards) data.rewards=def.rewards;
+      if(!data.rewardNextId) data.rewardNextId=def.rewardNextId;
+      return data;
+    }
+  }catch(e){}
+  return JSON.parse(JSON.stringify(def));
+}
+function save(){localStorage.setItem(K,JSON.stringify(S));}
+let S=load();
+let nid=500,curPage='workbench',curSubject=null,editErrId=null,editPlanId=null,editingTaskId=null,currentSubject='yuwen';
+const pageTitles={workbench:'嘟嘟暑假学习工作台',errorbook:'错题本',reward:'奖励中心',pvz:'植物大战',vision:'视力训练',stats:'打卡统计',english:'每日英语',plan:'近期计划',docu:'纪录片'};
+
+// ========== 渲染 ==========
+function renderSidebar(){
+  const nav=S.sidebarItems.map(item=>{
+    const active=curPage===item.id?' active':'';
+    return `<div class="sidebar-item${active}" data-page="${item.id}" data-action="nav">
+      <span class="icon">${item.icon}</span><span>${item.name}</span>
+      <span class="sidebar-edit" data-action="edit" data-id="${item.id}">✎</span>
+      <span class="sidebar-del" data-action="del" data-id="${item.id}">×</span>
+    </div>`;
+  }).join('');
+  document.getElementById('sidebarNav').innerHTML=nav+`<div class="sidebar-add" data-action="add">+</div>`;
+  // 事件委托
+  document.getElementById('sidebarNav').onclick=function(e){
+    const el=e.target.closest('[data-action]');
+    if(!el)return;
+    const action=el.dataset.action;
+    if(action==='nav'){navTo(el.closest('.sidebar-item').dataset.page);}
+    else if(action==='edit'){e.stopPropagation();editSidebarItem(el.dataset.id);}
+    else if(action==='del'){e.stopPropagation();delSidebarItem(el.dataset.id);}
+    else if(action==='add'){addSidebarItem();}
+  };
+}
+
+function navTo(page){
+  curPage=page;curSubject=null;render();
+}
+
+function addSidebarItem(){
+  const icon=prompt('图标 emoji','📌')||'📌';
+  const name=prompt('导航名称','新页面')||'新页面';
+  const id='s'+S.sidebarNextId++;
+  S.sidebarItems.push({id,icon,name,builtin:false});
+  save();render();toast('已添加「'+name+'」');
+}
+
+function editSidebarItem(id){
+  const item=S.sidebarItems.find(x=>x.id===id);if(!item)return;
+  item.icon=prompt('图标 emoji',item.icon)||item.icon;
+  item.name=prompt('导航名称',item.name)||item.name;
+  save();render();toast('已修改');
+}
+
+function delSidebarItem(id){
+  const item=S.sidebarItems.find(x=>x.id===id);
+  if(!item||!confirm('确定删除「'+item.name+'」？'))return;
+  S.sidebarItems=S.sidebarItems.filter(x=>x.id!==id);
+  if(curPage===id)curPage='workbench';
+  save();render();toast('已删除');
+}
+
+function render(p){
+  curPage=p||curPage;
+  if(curPage==='workbench'&&curSubject&&S.subjects[curSubject]){
+    document.getElementById('topTitle').textContent=S.subjects[curSubject].name+' - 任务详情';
+  }else{
+    document.getElementById('topTitle').textContent=pageTitles[curPage]||'嘟嘟学习';
+  }
+  let h='';
+  switch(curPage){
+    case 'workbench':h=renderWorkbench();break;
+    case 'errorbook':h=renderErrorbook();break;
+    case 'reward':h=renderReward();break;
+    case 'pvz':h=renderPVZ();break;
+    case 'vision':h=renderVision();break;
+    case 'stats':h=renderStats();break;
+    case 'english':h=renderEnglish();break;
+    case 'plan':h=renderPlan();break;
+    case 'docu':h=renderDocuPage();break;
+    default:h='<div class="page-title">📌 自定义页面</div><div class="page-subtitle">这是你添加的自定义页面，可以自由使用</div>';
+  }
+  document.getElementById('content').innerHTML=h;
+  document.getElementById('content').classList.toggle('pvz-page',curPage==='pvz');
+  document.querySelector('.main').classList.toggle('pvz-page',curPage==='pvz');
+  renderSidebar();
+  if(curPage==='pvz'){initPVZ();}
+}
+
+// ====== 工作台 ======
+function renderWorkbench(){
+  if(curSubject)return renderSubjectDetail(curSubject);
+  const all=[];
+  S.subjectOrder.forEach(k=>{if(S.subjects[k]) all.push(...S.subjects[k].tasks);});
+  const t=all.length,d=all.filter(x=>x.done).length,r=t>0?Math.round(d/t*100):0;
+  const cards=S.subjectOrder.map(k=>{
+    if(!S.subjects[k])return '';
+    const s=S.subjects[k];
+    const done=s.tasks.filter(x=>x.done).length;
+    const total=s.tasks.length;
+    const pct=total>0?Math.round(done/total*100):0;
+    return `<div class="subject-big-card" onclick="curSubject='${k}';render()">
+      <div class="sbc-actions" onclick="event.stopPropagation()">
+        <span class="sbc-edit" onclick="editSubject('${k}')">✏️</span>
+        <span class="sbc-del" onclick="delSubject('${k}')">🗑️</span>
+      </div>
+      <div class="sbc-top"><div class="subject-icon ${s.iconClass||''}">${s.icon}</div><div class="sbc-name">${s.name}</div></div>
+      <div class="sbc-progress"><div class="sbc-bar"><div class="sbc-fill" style="width:${pct}%"></div></div><span class="sbc-pct">${pct}%</span></div>
+      <div class="sbc-stats"><span>${done}/${total} 项完成</span><span>共 ${total} 项</span></div>
+      <div class="sbc-preview">${s.tasks.slice(0,3).map(t=>`<span class="sbc-tag${t.done?' done':''}">${t.done?'✓':''}${esc(t.text).substring(0,10)}${t.text.length>10?'…':''}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+  const docuCard=`<div class="subject-big-card docu" onclick="curPage='docu';render()">
+    <div class="sbc-top"><div class="subject-icon icon-docu">🎬</div><div class="sbc-name">纪录片</div></div>
+    <div class="sbc-stats"><span>已看 ${S.docu.length} 部</span></div>
+    <div class="sbc-preview">${S.docu.slice(0,2).map(d=>`<span class="sbc-tag">🎬${esc(d.name)}</span>`).join('')||'<span style="font-size:11px;color:var(--sub)">还没有记录</span>'}</div>
+  </div>`;
+  return `<div class="page-title">🌱 嘟嘟暑假学习工作台</div><div class="page-subtitle">${getDateStr()}·加油鸭！</div>
+    <div class="stats"><div class="stat-card"><div class="stat-num">${t}</div><div class="stat-label">学习项</div></div>
+    <div class="stat-card green"><div class="stat-num">${d}</div><div class="stat-label">今日完成</div></div>
+    <div class="stat-card orange"><div class="stat-num">${r}%</div><div class="stat-label">完成率</div></div></div>
+    ${cards}${docuCard}
+    <div class="add-task" onclick="addSubject()">+添加学科</div>`;
+}
+
+function addSubject(){
+  const icon=prompt('图标 emoji','📚')||'📚';
+  const name=prompt('学科名称','新学科')||'新学科';
+  const desc=prompt('简短描述','');
+  const key='s'+Date.now();
+  S.subjects[key]={name,icon,iconClass:'',desc:desc||'',tasks:[]};
+  S.subjectOrder.push(key);
+  save();render();toast('已添加「'+name+'」');
+}
+
+function editSubject(k){
+  const s=S.subjects[k];if(!s)return;
+  s.icon=prompt('图标 emoji',s.icon)||s.icon;
+  s.name=prompt('学科名称',s.name)||s.name;
+  s.desc=prompt('简短描述',s.desc||'')||'';
+  save();render();toast('已修改');
+}
+
+function delSubject(k){
+  const s=S.subjects[k];if(!s)return;
+  if(!confirm('确定删除「'+s.name+'」？所有任务也会被删除。'))return;
+  delete S.subjects[k];
+  S.subjectOrder=S.subjectOrder.filter(x=>x!==k);
+  if(curSubject===k)curSubject=null;
+  save();render();toast('已删除');
+}
+
+function renderSubjectDetail(k){
+  const s=S.subjects[k];
+  const done=s.tasks.filter(x=>x.done).length;
+  const total=s.tasks.length;
+  const pct=total>0?Math.round(done/total*100):0;
+  const tasks=s.tasks.map(t=>`<li class="task-item${t.done?' done':''}">
+    <div class="task-check" onclick="toggleTask(${t.id},'${k}')">${t.done?'✓':''}</div>
+    <div class="task-text">${esc(t.text)}<div class="task-meta">${esc(t.note||'')}</div></div>
+    ${t.streak>0?`<span class="task-streak">🔥${t.streak}天</span>`:''}
+    <div class="task-actions"><button class="task-action" onclick="editTask(${t.id},'${k}')">✎</button><button class="task-action" onclick="delTask(${t.id},'${k}')">✕</button></div></li>`).join('');
+  return `<div class="page-title" style="cursor:pointer" onclick="curSubject=null;render()">‹ 返回</div>
+    <div class="subject-section"><div class="subject-header"><div class="subject-info"><div class="subject-icon ${s.iconClass}">${s.icon}</div><div><div class="subject-name">${s.name}</div><div class="subject-desc">${done}/${total}完成·${pct}%</div></div></div><div class="subject-actions"><button class="btn-icon" onclick="openAddTask('${k}')">+</button></div></div>
+    <div class="sbc-progress" style="padding:0 0 12px 0"><div class="sbc-bar"><div class="sbc-fill" style="width:${pct}%"></div></div></div>
+    <ul class="task-list">${tasks||'<div class="empty">暂无任务，点击下方添加</div>'}<div class="add-task" onclick="openAddTask('${k}')">+添加${s.name}任务</div></ul></div>`;
+}
+
+function renderSubject(k){
+  const s=S.subjects[k];
+  const tasks=s.tasks.map(t=>`<li class="task-item${t.done?' done':''}">
+    <div class="task-check" onclick="toggleTask(${t.id},'${k}')">${t.done?'✓':''}</div>
+    <div class="task-text">${esc(t.text)}<div class="task-meta">${esc(t.note||'')}</div></div>
+    ${t.streak>0?`<span class="task-streak">🔥${t.streak}天</span>`:''}
+    <div class="task-actions"><button class="task-action" onclick="editTask(${t.id},'${k}')">✎</button><button class="task-action" onclick="delTask(${t.id},'${k}')">✕</button></div></li>`).join('');
+  return `<div class="subject-section"><div class="subject-header"><div class="subject-info"><div class="subject-icon ${s.iconClass}">${s.icon}</div><div><div class="subject-name">${s.name}</div><div class="subject-desc">${esc(s.desc)}·${s.tasks.length}项</div></div></div><div class="subject-actions"><button class="btn-icon" onclick="openAddTask('${k}')">+</button></div></div><ul class="task-list">${tasks||'<div class="empty">暂无任务</div>'}<div class="add-task" onclick="openAddTask('${k}')">+添加${s.name}任务</div></ul></div>`;
+}
+
+function renderDocuSection(){
+  const cards=S.docu.map(d=>`<div class="docu-card" onclick="viewDocu(${d.id})"><button class="docu-delete" onclick="event.stopPropagation();delDocu(${d.id})">✕</button><div class="docu-thumb">🎬</div><div class="docu-name">${esc(d.name)}</div><div class="docu-meta">${esc(d.theme)}·${'⭐'.repeat(d.rating)}</div></div>`).join('');
+  return `<div class="subject-section"><div class="subject-header"><div class="subject-info"><div class="subject-icon icon-docu">🎬</div><div><div class="subject-name">纪录片</div><div class="subject-desc">拓展视野·${S.docu.length}部</div></div></div><div class="subject-actions"><button class="btn-icon" onclick="openDocuModal()">+</button></div></div><div class="docu-grid">${cards}<div class="docu-card" style="border:1.5px dashed #d0d4dd;background:transparent;display:flex;align-items:center;justify-content:center;min-height:180px;color:#8b8fa3;font-size:14px;cursor:pointer" onclick="openDocuModal()"><div style="text-align:center"><div style="font-size:36px;color:#d0d4dd">+</div><div>添加纪录片</div></div></div></div></div>`;
+}
+
+function renderDocuPage(){
+  const cards=S.docu.map(d=>`<div class="docu-card" onclick="viewDocu(${d.id})"><button class="docu-delete" onclick="event.stopPropagation();delDocu(${d.id})">✕</button><div class="docu-thumb">🎬</div><div class="docu-name">${esc(d.name)}</div><div class="docu-meta">${esc(d.theme)}·${'⭐'.repeat(d.rating)}</div></div>`).join('');
+  return `<div class="page-title" style="cursor:pointer" onclick="curPage='workbench';curSubject=null;render()">‹ 返回工作台</div>
+    <div class="subject-section"><div class="subject-header"><div class="subject-info"><div class="subject-icon icon-docu">🎬</div><div><div class="subject-name">纪录片</div><div class="subject-desc">已看 ${S.docu.length} 部</div></div></div><div class="subject-actions"><button class="btn-icon" onclick="openDocuModal()">+</button></div></div>
+    <div class="docu-grid">${cards||'<div class="empty">还没有记录</div>'}<div class="docu-card" style="border:1.5px dashed #d0d4dd;background:transparent;display:flex;align-items:center;justify-content:center;min-height:180px;color:#8b8fa3;font-size:14px;cursor:pointer" onclick="openDocuModal()"><div style="text-align:center"><div style="font-size:36px;color:#d0d4dd">+</div><div>添加纪录片</div></div></div></div></div>`;
+}
+
+// ====== 奖励中心 ======
+function renderReward(){
+  const p=S.pvz;
+  const rewards=S.rewards||[];
+
+  const items=rewards.map(r=>{
+    const canClaim=p.sun>=r.cost;
+    return `<div class="reward-item">
+      <div class="reward-emoji">${r.emoji}</div>
+      <div class="reward-info">
+        <div class="reward-name">${r.name}</div>
+        <div class="reward-cost">${r.cost} <span class="sun-icon">☀️</span></div>
+      </div>
+      <div class="reward-actions">
+        <span class="reward-edit" onclick="editReward(${r.id})">✎</span>
+        <span class="reward-del" onclick="delReward(${r.id})">×</span>
+      </div>
+      <button class="reward-btn${canClaim?'':' disabled'}" onclick="${canClaim?`claimReward(${r.id},'${r.name.replace(/'/g,"\\'")}',${r.cost})`:''}">兑换</button>
+    </div>`;
+  }).join('');
+
+  return `<div class="page-title">🎁 奖励中心</div><div class="page-subtitle">${getDateStr()}</div>
+    <div class="reward-sun-card">
+      <div class="reward-sun-icon">☀️</div>
+      <div class="reward-sun-num">${p.sun}</div>
+      <div class="reward-sun-label">可用阳光</div>
+    </div>
+    <div class="reward-section">
+      <div class="reward-header">
+        <div class="reward-header-left"><span class="reward-header-icon">🎯</span>奖励清单</div>
+        <span class="reward-count">${rewards.length} 项</span>
+      </div>
+      <div class="reward-list">${items||'<div class="empty">暂无奖励，点击下方添加</div>'}</div>
+    </div>
+    <div class="reward-add-bar" onclick="addReward()">
+      <span class="reward-add-icon">+</span>
+      <span>添加奖励</span>
+    </div>`;
+}
+
+function claimReward(id,name,cost){
+  if(S.pvz.sun<cost){toast('阳光不足！');return;}
+  if(!confirm(`确认用 ${cost}☀️ 兑换「${name}」？`))return;
+  S.pvz.sun-=cost;
+  save();render();
+  toast(`🎉成功兑换「${name}」！`);
+}
+
+function addReward(){
+  const emoji=prompt('图标 emoji','🎁')||'🎁';
+  const name=prompt('奖励名称','新奖励')||'新奖励';
+  const cost=parseInt(prompt('需要阳光数量','50'))||50;
+  S.rewards.push({id:S.rewardNextId++,emoji,name,cost});
+  save();render();toast('已添加');
+}
+
+function editReward(id){
+  const r=S.rewards.find(x=>x.id===id);if(!r)return;
+  r.emoji=prompt('图标 emoji',r.emoji)||r.emoji;
+  r.name=prompt('奖励名称',r.name)||r.name;
+  r.cost=parseInt(prompt('需要阳光数量',r.cost))||r.cost;
+  save();render();toast('已修改');
+}
+
+function delReward(id){
+  if(!confirm('确定删除这个奖励？'))return;
+  S.rewards=S.rewards.filter(x=>x.id!==id);
+  save();render();toast('已删除');
+}
+
+// ====== PVZ 战场 ======
+function renderPVZ(){
+  const p=S.pvz;
+  const lanes=[
+    {k:'yuwen',n:'语文',icon:'📖',zEmoji:'🧟',zName:'读报僵尸'},
+    {k:'shuxue',n:'数学',icon:'🔢',zEmoji:'🧟‍♂️',zName:'路障僵尸'},
+    {k:'yingyu',n:'英语',icon:'🔤',zEmoji:'🧟‍♀️',zName:'舞王僵尸'}
+  ];
+
+  // 计算连续天数
+  const allDone=Object.values(S.subjects).every(sub=>sub.tasks.every(t=>t.done));
+  if(allDone)p.streakDays=(p.streakDays||0)+1;
+
+  // 花园网格
+  let gridRows='';
+  lanes.forEach((lane,i)=>{
+    const z=p.zombies.find(x=>x.lane===lane.k);
+    const pos=z?z.position:0;
+    const lanePlants=p.plants.filter(x=>x.row===i);
+
+    // 基地列
+    const basePlants=lanePlants.filter(x=>x.col===0);
+    const basePlant=basePlants[0];
+    const baseContent=basePlant?(()=>{
+      const pd=PLANT_DEFS.find(x=>x.type===basePlant.type);
+      return `<div class="base-icon">${pd?pd.emoji:'🌱'}</div><div class="base-label">${pd?pd.name:''}</div>`;
+    })():`<div class="base-icon">🏠</div><div class="base-label">基地</div>`;
+
+    // 植物列（1-7）
+    let cells='';
+    for(let c=1;c<=7;c++){
+      const plant=lanePlants.find(x=>x.col===c);
+      if(plant){
+        const pd=PLANT_DEFS.find(x=>x.type===plant.type);
+        cells+=`<div class="pvz-grid-cell has-plant" onclick="showPlantDetail('${plant.type}')">${pd?pd.emoji:'🌱'}${pd?`<div class="plant-label">${pd.name}</div>`:''}</div>`;
+      }else{
+        cells+=`<div class="pvz-grid-cell" onclick="onCellClick(${i},${c})">+</div>`;
+      }
+    }
+
+    // 僵尸列
+    const zombieHtml=z?`<div class="pvz-grid-zombie${z.frozen?' frozen':''}"><span class="zombie-icon">${z.emoji}</span><span class="zombie-label">${pos>=7?'⚠️危险':pos+'/'+8}</span></div>`:'';
+
+    gridRows+=`<div class="pvz-grid-row">
+      <div class="pvz-grid-base">${baseContent}</div>
+      ${cells}
+      <div class="pvz-grid-zombie">${zombieHtml}</div>
+    </div>`;
+  });
+
+  // 今日能量明细
+  let energyRows='',todayTotal=0;
+  S.subjectOrder.forEach(k=>{
+    const sub=S.subjects[k];
+    const doneCount=sub.tasks.filter(t=>t.done).length;
+    if(doneCount>0){
+      const earn=doneCount*50;todayTotal+=earn;
+      energyRows+=`<div class="pvz-energy-row"><span class="name">${sub.icon} ${sub.name} · 完成${doneCount}项</span><span class="val">+${earn}☀️</span></div>`;
+      sub.tasks.filter(t=>t.done&&t.streak>=3).forEach(t=>{
+        todayTotal+=10;
+        energyRows+=`<div class="pvz-energy-row"><span class="name">🔥 ${sub.name} · 连续${t.streak}天</span><span class="val">+10☀️</span></div>`;
+      });
+    }
+  });
+  p.plants.forEach(pl=>{
+    const pd=PLANT_DEFS.find(x=>x.type===pl.type);
+    if(pd&&pd.effect==='daily_sun'){todayTotal+=pd.effectVal;energyRows+=`<div class="pvz-energy-row"><span class="name">${pd.emoji} ${pd.name}产出</span><span class="val">+${pd.effectVal}☀️</span></div>`;}
+  });
+  if(!energyRows)energyRows='<div class="pvz-energy-row"><span class="name">今天还没有完成学习任务哦</span><span class="val">0☀️</span></div>';
+
+  return `<div class="pvz-wrap">
+    <div class="pvz-top-cards">
+      <div class="pvz-card sun">
+        <div class="pvz-card-icon">☀️</div>
+        <div class="pvz-card-num">${p.sun}</div>
+        <div class="pvz-card-label">阳光</div>
+      </div>
+      <div class="pvz-card streak">
+        <div class="pvz-card-icon">🔥</div>
+        <div class="pvz-card-num">${p.streakDays}</div>
+        <div class="pvz-card-label">连续天数</div>
+      </div>
+    </div>
+    <div class="pvz-garden">
+      <div class="pvz-garden-header">
+        <div class="left">🏠 嘟嘟的花园基地</div>
+        <div class="right">🌿 三路僵尸待命中，继续保持！</div>
+      </div>
+      <div class="pvz-grid">${gridRows}</div>
+      <div class="pvz-garden-footer">
+        <span class="hint">👆 点空格选植物种下，点植物收回仓库</span>
+        <span class="total">${p.sun}</span>
+      </div>
+    </div>
+    <div class="pvz-energy-section">
+      <div class="pvz-energy-title">⚡ 今日能量 <span class="add-btn" onclick="openShop()">+</span></div>
+      <div class="pvz-energy-list">${energyRows}</div>
+      <div class="pvz-energy-total"><span class="total-label">📊 合计</span><span class="total-val">+${todayTotal}☀️</span></div>
+    </div>
+  </div>`;
+}
+
+function initPVZ(){
+  if(!S.pvz.todayChecked||S.pvz.lastCheckDate!==new Date().toISOString().slice(0,10)){
+    S.pvz.todayChecked=true;
+    S.pvz.lastCheckDate=new Date().toISOString().slice(0,10);
+    save();
+    setTimeout(()=>toast('🧟 僵尸正在靠近！完成学习任务击退它们！'),500);
+  }
+}
+
+function openShop(){
+  const p=S.pvz;
+  const totalDone=Object.values(S.subjects).reduce((s,sub)=>s+sub.tasks.filter(t=>t.done).length,0);
+  let shop='';
+  PLANT_DEFS.forEach(pl=>{
+    const owned=p.plants.some(x=>x.type===pl.type);
+    const locked=!owned&&totalDone<pl.unlock;
+    shop+=`<div class="pvz-shop-item${locked?' locked':''}${owned?' owned':''}" onclick="${locked?'':owned?'showPlantDetail(\''+pl.type+'\')':'buyPlant(\''+pl.type+'\')'}">
+      <div class="pvz-shop-emoji">${pl.emoji}</div>
+      <div class="pvz-shop-name">${pl.name}${owned?'✓':''}</div>
+      <div class="pvz-shop-desc">${pl.desc}</div>
+      <div class="pvz-shop-cost">${locked?`🔒需${pl.unlock}任务`:owned?'已拥有':`☀️${pl.cost}`}</div>
+    </div>`;
+  });
+  document.getElementById('shopContent').innerHTML=shop;
+  document.getElementById('shopModal').classList.add('show');
+}
+
+function onCellClick(row,col){
+  const p=S.pvz;
+  if(p.plants.some(x=>x.row===row&&x.col===col)){toast('这里已经有植物了！');return;}
+  const owned=[...new Set(p.plants.map(x=>x.type))];
+  if(owned.length===0){toast('还没有植物！先打开商店购买吧~');openShop();return;}
+  const unplanted=PLANT_DEFS.filter(d=>owned.includes(d.type)&&!p.plants.some(x=>x.type===d.type&&x.row===row));
+  const allOwned=PLANT_DEFS.filter(d=>owned.includes(d.type));
+  if(unplanted.length===0&&allOwned.length>0){toast('所有植物都已种下啦！');return;}
+  const plantType=unplanted.length>0?unplanted[0].type:allOwned[0].type;
+  p.plants.push({type:plantType,row,col,planted:new Date().toISOString().slice(0,10)});
+  save();render('reward');
+  const pd=PLANT_DEFS.find(x=>x.type===plantType);
+  toast(`🌱种下了${pd?pd.name:'植物'}！`);
+}
+
+function buyPlant(type){
+  const pd=PLANT_DEFS.find(x=>x.type===type);
+  if(!pd)return;
+  const p=S.pvz;
+  if(p.plants.some(x=>x.type===type)){toast('已经拥有这个植物了！');return;}
+  const totalDone=Object.values(S.subjects).reduce((s,sub)=>s+sub.tasks.filter(t=>t.done).length,0);
+  if(totalDone<pd.unlock){toast(`🔒需要完成${pd.unlock}个任务才能解锁！`);return;}
+  if(p.sun<pd.cost){toast(`☀️阳光不足！需要${pd.cost}，当前${p.sun}`);return;}
+  p.sun-=pd.cost;
+  let planted=false;
+  for(let r=0;r<3;r++){
+    for(let c=1;c<=7;c++){
+      if(!p.plants.some(x=>x.row===r&&x.col===c)){
+        p.plants.push({type,row:r,col:c,planted:new Date().toISOString().slice(0,10)});
+        planted=true;break;
+      }
+    }
+    if(planted)break;
+  }
+  if(!planted)p.plants.push({type,row:0,col:1,planted:new Date().toISOString().slice(0,10)});
+  save();render('reward');closeModal('shopModal');
+  toast(`🎉购买了${pd.name}！${pd.emoji}`);
+}
+
+function showPlantDetail(type){
+  const pd=PLANT_DEFS.find(x=>x.type===type);
+  if(!pd)return;
+  document.getElementById('plantDetailEmoji').textContent=pd.emoji;
+  document.getElementById('plantDetailName').textContent=pd.name;
+  document.getElementById('plantDetailDesc').textContent=pd.desc+'·购买价格：☀️'+pd.cost;
+  document.getElementById('plantDetailModal').classList.add('show');
+}
+
+// ====== 僵尸位置更新 ======
+function updateZombies(){
+  const p=S.pvz;
+  const laneMap={yuwen:0,shuxue:1,yingyu:2};
+  Object.entries(S.subjects).forEach(([k,sub])=>{
+    const z=p.zombies.find(x=>x.lane===k);
+    if(!z)return;
+    if(z.frozen){z.frozen=false;return;}
+    const total=sub.tasks.length;
+    const done=sub.tasks.filter(t=>t.done).length;
+    if(done===total){
+      z.position=Math.max(0,z.position-1);
+      const row=laneMap[k];
+      const lanePlants=p.plants.filter(x=>x.row===row);
+      if(lanePlants.some(x=>x.type==='peashooter'))z.position=Math.max(0,z.position-1);
+      if(lanePlants.some(x=>x.type==='cherryBomb'))z.position=Math.max(0,z.position-3);
+    }else if(done===0){
+      z.position=Math.min(8,z.position+1);
+    }
+    if(z.position>=8){
+      const row=laneMap[k];
+      const lanePlants=p.plants.filter(x=>x.row===row);
+      if(lanePlants.some(x=>x.type==='wallnut')){
+        const wnIdx=p.plants.findIndex(x=>x.row===row&&x.type==='wallnut');
+        if(wnIdx>=0){p.plants.splice(wnIdx,1);toast('🥔坚果墙牺牲了，但保护了基地！');}
+        z.position=5;
+      }else if(p.baseHealth>0){
+        if(lanePlants.length>0){
+          const eaten=p.plants.findIndex(x=>x.row===row);
+          if(eaten>=0){p.plants.splice(eaten,1);toast('🧟僵尸吃掉了你的植物！');}
+        }else{
+          p.baseHealth--;
+          toast(`💔僵尸入侵基地！基地血量-1（剩余${p.baseHealth}）`);
+        }
+        z.position=5;
+      }
+      if(p.baseHealth<=0){toast('🏚️基地被攻破了...快完成任务重建防线吧！');p.baseHealth=1;}
+    }
+  });
+  save();
+}
+
+function dailyPVZCheck(){
+  const p=S.pvz;
+  const today=new Date().toISOString().slice(0,10);
+  if(p.lastCheckDate===today)return;
+  p.lastCheckDate=today;
+  p.plants.forEach(pl=>{
+    const pd=PLANT_DEFS.find(x=>x.type===pl.type);
+    if(pd&&pd.effect==='daily_sun')p.sun+=pd.effectVal;
+  });
+  if(p.plants.some(x=>x.type==='kernelpult')){
+    if(Math.random()<0.3){p.coins+=1;toast('🌽玉米投手发现了1枚金币！');}
+  }
+  save();
+}
+
+// ====== 任务操作 ======
+function toggleTask(id,k){
+  const t=S.subjects[k].tasks.find(x=>x.id===id);
+  if(t){
+    t.done=!t.done;
+    if(t.done){t.streak=(t.streak||0)+1;S.pvz.sun+=50;toast('🎉完成任务+50☀️');}
+    else{t.streak=Math.max(0,(t.streak||0)-1);S.pvz.sun=Math.max(0,S.pvz.sun-50);toast('已取消完成');}
+    if(t.done&&t.streak>0&&t.streak%3===0){S.pvz.sun+=10;S.pvz.coins+=1;toast('🔥连续奖励+10☀️+1🪙');}
+    updateZombies();save();render();
+  }
+}
+function delTask(id,k){
+  if(!confirm('确定删除？'))return;
+  S.subjects[k].tasks=S.subjects[k].tasks.filter(x=>x.id!==id);save();render();toast('已删除');
+}
+function editTask(id,k){
+  const t=S.subjects[k].tasks.find(x=>x.id===id);if(!t)return;
+  editingTaskId=id;currentSubject=k;
+  const sel=document.getElementById('taskSubject');
+  sel.innerHTML=S.subjectOrder.map(sk=>{
+    const s=S.subjects[sk];
+    return s?`<option value="${sk}">${s.icon}${s.name}</option>`:'';
+  }).join('');
+  sel.value=k;sel.disabled=true;
+  document.getElementById('modalTitle').textContent='编辑任务';
+  document.getElementById('taskName').value=t.text;document.getElementById('taskNote').value=t.note||'';
+  document.getElementById('taskModal').classList.add('show');
+}
+function openAddTask(k){
+  editingTaskId=null;currentSubject=k||S.subjectOrder[0];
+  const sel=document.getElementById('taskSubject');
+  sel.innerHTML=S.subjectOrder.map(sk=>{
+    const s=S.subjects[sk];
+    return s?`<option value="${sk}">${s.icon}${s.name}</option>`:'';
+  }).join('');
+  sel.value=currentSubject;sel.disabled=false;
+  document.getElementById('modalTitle').textContent='添加任务';
+  document.getElementById('taskName').value='';document.getElementById('taskNote').value='';
+  document.getElementById('taskModal').classList.add('show');
+  setTimeout(()=>document.getElementById('taskName').focus(),100);
+}
+document.getElementById('modalSaveBtn').onclick=function(){
+  const name=document.getElementById('taskName').value.trim();
+  const note=document.getElementById('taskNote').value.trim();
+  const subj=document.getElementById('taskSubject').value;
+  if(!name){toast('请输入任务名称');return;}
+  if(editingTaskId){
+    const t=S.subjects[currentSubject].tasks.find(x=>x.id===editingTaskId);
+    if(t){t.text=name;t.note=note;}
+  }else{S.subjects[subj].tasks.push({id:++nid,text:name,note,done:false,streak:0});}
+  save();render();closeModal('taskModal');toast(editingTaskId?'已更新':'已添加');
+};
+
+// ====== 纪录片 ======
+function openDocuModal(){
+  document.getElementById('docuName').value='';document.getElementById('docuTheme').value='';
+  document.getElementById('docuNotes').value='';document.getElementById('docuRating').value='5';
+  document.getElementById('docuModal').classList.add('show');
+  setTimeout(()=>document.getElementById('docuName').focus(),100);
+}
+function saveDocu(){
+  const name=document.getElementById('docuName').value.trim();
+  if(!name){toast('请输入名称');return;}
+  S.docu.push({id:++nid,name,theme:document.getElementById('docuTheme').value.trim()||'未分类',notes:document.getElementById('docuNotes').value.trim()||'（暂无笔记）',rating:parseInt(document.getElementById('docuRating').value),date:new Date().toISOString().slice(0,10)});
+  save();render();closeModal('docuModal');toast('已添加纪录片');
+}
+function viewDocu(id){
+  const d=S.docu.find(x=>x.id===id);if(!d)return;
+  document.getElementById('docuDetailName').textContent=d.name;
+  document.getElementById('docuDetailMeta').textContent=`${d.theme}·${'⭐'.repeat(d.rating)}·${d.date}`;
+  document.getElementById('docuDetailNotes').textContent=d.notes;
+  document.getElementById('docuDetailModal').classList.add('show');
+}
+function delDocu(id){if(!confirm('确定删除？'))return;S.docu=S.docu.filter(x=>x.id!==id);save();render();toast('已删除');}
+
+// ====== 错题本 ======
+function renderErrorbook(){
+  const sj={},names={},colors={};
+  S.subjectOrder.forEach(k=>{
+    const s=S.subjects[k];
+    if(s){sj[k]=s.icon;names[k]=s.name;colors[k]='#4a5fc1';}
+  });
+  const items=S.errors.map(e=>`<div class="error-card"><div class="error-subject" style="background:${colors[e.subject]||'#ccc'};color:#fff">${sj[e.subject]||'?'}</div><div class="error-info"><div class="error-q">${esc(e.question)}</div><div class="error-a">✅${esc(e.answer)}</div><div class="error-reason">💡${esc(e.reason)}</div><div class="error-date">${names[e.subject]||e.subject}·${e.date}</div></div><button class="task-action" onclick="delError(${e.id})">✕</button></div>`).join('');
+  return `<div class="page-title">📝错题本</div><div class="page-subtitle">共${S.errors.length}道错题·温故知新</div>${items||'<div class="empty">还没有错题，点击右下角+添加</div>'}<div class="add-task" onclick="openErrorModal()">+添加错题</div>`;
+}
+function openErrorModal(eid){
+  editErrId=eid||null;
+  const sel=document.getElementById('errorSubject');
+  sel.innerHTML=S.subjectOrder.map(k=>{
+    const s=S.subjects[k];
+    return s?`<option value="${k}">${s.icon}${s.name}</option>`:'';
+  }).join('');
+  document.getElementById('errorModalTitle').textContent=eid?'编辑错题':'添加错题';
+  if(eid){const e=S.errors.find(x=>x.id===eid);sel.value=e.subject;document.getElementById('errorQuestion').value=e.question;document.getElementById('errorAnswer').value=e.answer;document.getElementById('errorReason').value=e.reason;}
+  else{sel.value=S.subjectOrder[0]||'';document.getElementById('errorQuestion').value='';document.getElementById('errorAnswer').value='';document.getElementById('errorReason').value='';}
+  document.getElementById('errorModal').classList.add('show');
+}
+document.getElementById('errorSaveBtn').onclick=function(){
+  const q=document.getElementById('errorQuestion').value.trim();
+  if(!q){toast('请输入题目');return;}
+  if(editErrId){const e=S.errors.find(x=>x.id===editErrId);if(e){e.subject=document.getElementById('errorSubject').value;e.question=q;e.answer=document.getElementById('errorAnswer').value.trim();e.reason=document.getElementById('errorReason').value.trim();}}
+  else{S.errors.push({id:++nid,subject:document.getElementById('errorSubject').value,question:q,answer:document.getElementById('errorAnswer').value.trim(),reason:document.getElementById('errorReason').value.trim(),date:new Date().toISOString().slice(0,10)});}
+  save();render();closeModal('errorModal');toast(editErrId?'已更新':'已添加');
+};
+function delError(id){if(!confirm('确定删除？'))return;S.errors=S.errors.filter(x=>x.id!==id);save();render();toast('已删除');}
+
+// ====== 视力训练 ======
+function renderVision(){
+  const cards=S.visions.map(v=>{
+    const min=Math.floor(v.duration/60),sec=v.duration%60;
+    const durStr=min>0?sec>0?`${min}分${sec}秒`:`${min}分钟`: `${sec}秒`;
+    return `<div class="vision-card" onclick="startVision(${v.id})">
+      <div class="vision-card-actions">
+        <span class="vision-edit" onclick="event.stopPropagation();editVision(${v.id})">✏️</span>
+        <span class="vision-del" onclick="event.stopPropagation();delVision(${v.id})">🗑️</span>
+      </div>
+      <div class="vision-icon">${v.icon}</div>
+      <div class="vision-name">${v.name}</div>
+      <div class="vision-desc">${v.desc}</div>
+      <div class="vision-time">⏱ ${durStr}</div>
+    </div>`;
+  }).join('');
+  return `<div class="page-title">👁️视力训练</div>
+    <div class="page-subtitle">每天5分钟，保护眼睛，放松视力</div>
+    <div class="vision-grid">${cards}</div>
+    <div class="add-task" onclick="addVision()">+添加训练</div>
+    <div id="vision-timer" class="vision-timer" style="display:none"></div>`;
+}
+
+function addVision(){
+  const icon=prompt('输入图标 emoji（如 🔭👀💆🧊）','👁️')||'👁️';
+  const name=prompt('训练名称','新训练')||'新训练';
+  const desc=prompt('简短描述','');
+  const min=parseInt(prompt('时长（分钟）','5'))||5;
+  const sec=parseInt(prompt('时长（秒，0表示没有）','0'))||0;
+  S.visions.push({id:S.visionNextId++,icon,name,desc,duration:min*60+sec});
+  save();render();toast('已添加');
+}
+
+function editVision(id){
+  const v=S.visions.find(x=>x.id===id);if(!v)return;
+  v.icon=prompt('图标 emoji',v.icon)||v.icon;
+  v.name=prompt('训练名称',v.name)||v.name;
+  v.desc=prompt('简短描述',v.desc)||'';
+  const min=Math.floor(v.duration/60),sec=v.duration%60;
+  const newMin=parseInt(prompt('时长（分钟）',min))||0;
+  const newSec=parseInt(prompt('时长（秒）',sec))||0;
+  v.duration=Math.max(1,newMin*60+newSec);
+  save();render();toast('已修改');
+}
+
+function delVision(id){
+  if(!confirm('确定删除这个训练？'))return;
+  S.visions=S.visions.filter(x=>x.id!==id);
+  save();render();toast('已删除');
+}
+
+function startVision(id){
+  const v=S.visions.find(x=>x.id===id);if(!v)return;
+  let t=v.duration;
+  const timerEl=document.getElementById('vision-timer');
+  timerEl.style.display='block';
+  timerEl.innerHTML=`<div class="vision-active">
+    <div class="vision-active-icon">${v.icon}</div>
+    <div class="vision-active-name">${v.name}</div>
+    <div class="vision-active-inst">${v.desc}</div>
+    <div class="vision-countdown">⏱ <span id="vision-count">${t}</span>秒</div>
+    <button class="vision-cancel" onclick="stopVision()">取消</button>
+  </div>`;
+  const countEl=document.getElementById('vision-count');
+  const iv=setInterval(()=>{
+    t--;
+    countEl.textContent=t;
+    if(t<=0){clearInterval(iv);timerEl.innerHTML=`<div class="vision-active"><div class="vision-active-icon">✅</div><div class="vision-active-name">完成！</div><div class="vision-active-desc">太棒了！眼睛得到了放松 🎉</div><button class="vision-done" onclick="document.getElementById('vision-timer').style.display='none'">返回</button></div>`;toast('视力训练完成！+30☀️');S.pvz.sun+=30;save();updateTopBar();}
+  },1000);
+  timerEl._interval=iv;
+}
+function stopVision(){clearInterval(document.getElementById('vision-timer')._interval);document.getElementById('vision-timer').style.display='none';}
+
+// ====== 打卡统计 ======
+function renderStats(){
+  const all=[];
+  S.subjectOrder.forEach(k=>{if(S.subjects[k])all.push(...S.subjects[k].tasks);});
+  const done=all.filter(t=>t.done).length,total=all.length,rate=total>0?Math.round(done/total*100):0;
+  const week=['一','二','三','四','五','六','日'];const wd=[3,2,4,3,5,done,0];
+  let wHtml=week.map((d,i)=>`<div><div class="week-day">周${d}</div><div class="week-dot ${wd[i]>=5?'done':wd[i]>=3?'empty':wd[i]>0?'miss':'empty'}">${wd[i]}</div><div style="font-size:10px;color:#8b8fa3">项</div></div>`).join('');
+  const levels=[[3,2,4,5,2,1,0],[4,5,3,2,4,3,1],[2,3,5,4,3,2,4],[1,2,3,4,5,4,3]];
+  let heat='';for(let wk=0;wk<4;wk++){heat+=`<div style="font-size:11px;color:#8b8fa3;margin-bottom:4px">第${wk+1}周</div><div class="heatmap-grid" style="margin-bottom:10px">`;for(let d=0;d<7;d++){let cls='';if(levels[wk][d]>=5)cls='l4';else if(levels[wk][d]>=4)cls='l3';else if(levels[wk][d]>=2)cls='l2';else if(levels[wk][d]>=1)cls='l1';heat+=`<div class="heatmap-cell ${cls}"></div>`;}heat+='</div>';}
+  return `<div class="page-title">📊打卡统计</div><div class="page-subtitle">追踪学习进度，坚持就是胜利</div><div class="stats"><div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">总学习项</div></div><div class="stat-card green"><div class="stat-num">${done}</div><div class="stat-label">今日完成</div></div><div class="stat-card orange"><div class="stat-num">${rate}%</div><div class="stat-label">完成率</div></div></div><div class="chart-section"><div class="chart-title">📅本周打卡</div><div class="week-grid">${wHtml}</div></div><div class="chart-section"><div class="chart-title">🗓️本月热力图</div>${heat}</div>`;
+}
+
+// ====== 每日英语 ======
+function renderEnglish(){
+  const w=engWords[S.englishIdx%engWords.length];
+  const chips=engWords.map((w2,i)=>`<span class="word-chip${i===S.englishIdx%engWords.length?' active':''}" onclick="S.englishIdx=${i};save();render()">${w2.w}</span>`).join('');
+  return `<div class="page-title">🔤每日英语</div><div class="page-subtitle">每天一个新单词·第${S.englishIdx+1}天</div><div class="english-card"><div class="english-word">${w.w}</div><div class="english-phonetic">${w.p}</div><div class="english-meaning">释义：${w.m}</div><div class="english-example">${esc(w.e)}</div><div class="english-nav"><button class="btn btn-secondary" onclick="S.englishIdx=Math.max(0,S.englishIdx-1);save();render()">◀上一个</button><button class="btn btn-primary" onclick="S.englishIdx=(S.englishIdx+1)%engWords.length;save();render()">下一个▶</button></div></div><div class="chart-section"><div class="chart-title">📚单词库</div><div class="word-list">${chips}</div></div>`;
+}
+
+// ====== 近期计划 ======
+function renderPlan(){
+  S.plans.sort((a,b)=>a.date.localeCompare(b.date));
+  const items=S.plans.map(p=>{const d=new Date(p.date);return `<div class="plan-card"><div class="plan-date"><div class="plan-day">周${['日','一','二','三','四','五','六'][d.getDay()]}</div><div class="plan-dnum">${d.getDate()}</div></div><div class="plan-detail"><div class="plan-title">${esc(p.title)}</div><div class="plan-desc">${esc(p.desc)}</div></div><button class="task-action" onclick="delPlan(${p.id})">✕</button></div>`;}).join('');
+  return `<div class="page-title">📅近期计划</div><div class="page-subtitle">合理安排，快乐暑假</div>${items||'<div class="empty">还没有计划</div>'}<div class="add-task" onclick="openPlanModal()">+添加计划</div>`;
+}
+function openPlanModal(pid){
+  editPlanId=pid||null;
+  document.getElementById('planModalTitle').textContent=pid?'编辑计划':'添加计划';
+  if(pid){const p=S.plans.find(x=>x.id===pid);document.getElementById('planDate').value=p.date;document.getElementById('planTitle').value=p.title;document.getElementById('planDesc').value=p.desc;}
+  else{document.getElementById('planDate').value=new Date().toISOString().slice(0,10);document.getElementById('planTitle').value='';document.getElementById('planDesc').value='';}
+  document.getElementById('planModal').classList.add('show');
+}
+document.getElementById('planSaveBtn').onclick=function(){
+  const title=document.getElementById('planTitle').value.trim();if(!title){toast('请输入标题');return;}
+  if(editPlanId){const p=S.plans.find(x=>x.id===editPlanId);if(p){p.date=document.getElementById('planDate').value;p.title=title;p.desc=document.getElementById('planDesc').value.trim();}}
+  else{S.plans.push({id:++nid,date:document.getElementById('planDate').value,title,desc:document.getElementById('planDesc').value.trim()});}
+  save();render();closeModal('planModal');toast(editPlanId?'已更新':'已添加');
+};
+function delPlan(id){if(!confirm('确定删除？'))return;S.plans=S.plans.filter(x=>x.id!==id);save();render();toast('已删除');}
+
+// ====== 工具 ======
+function closeModal(id){document.getElementById(id).classList.remove('show');if(id==='taskModal')document.getElementById('taskSubject').disabled=false;}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function getDateStr(){const d=new Date();return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日·星期${['日','一','二','三','四','五','六'][d.getDay()]}`;}
+
+// FAB
+document.getElementById('fab').onclick=function(){
+  switch(curPage){
+    case 'errorbook':openErrorModal();break;
+    case 'plan':openPlanModal();break;
+    case 'reward':openAddReward();break;
+    case 'pvz':openShop();break;
+    default:openAddTask('yuwen');
+  }
+};
+
+// 侧边栏
+document.querySelectorAll('.sidebar-item').forEach(el=>{
+  el.addEventListener('click',()=>{curSubject=null;document.querySelectorAll('.sidebar-item').forEach(x=>x.classList.remove('active'));el.classList.add('active');render(el.dataset.page);});
+});
+
+// 遮罩关闭
+document.querySelectorAll('.modal-mask').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')});});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-mask.show').forEach(m=>m.classList.remove('show'))});
+
+// PWA - 先注销所有旧 SW
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(regs=>{regs.forEach(r=>r.unregister());});
+}
+
+// 启动
+dailyPVZCheck();
+if(!S.sidebarItems||S.sidebarItems.length===0){S.sidebarItems=def.sidebarItems;S.sidebarNextId=def.sidebarNextId;}
+if(!S.rewards||S.rewards.length===0){S.rewards=def.rewards;S.rewardNextId=def.rewardNextId;}
+if(!S.rewardNextId)S.rewardNextId=def.rewardNextId;
+save();
+render('workbench');
+toast('🌱 嘟嘟暑假学习工作台已就绪');
+</script>
+</body>
+</html>
