@@ -817,9 +817,9 @@ function petInteract(type){
   const pet=S.pvz.pet;
   const now=Date.now();
   const cfg={
-    pet:{cd:3600000,happiness:8,exp:5,msg:'🐱 招招很享受你的抚摸！+8开心 +5经验',speak:'喵呜~ 好舒服呀！'},
-    wash:{cd:14400000,cleanliness:30,exp:10,msg:'🛁 招招洗得干干净净！+30清洁 +10经验',speak:'喵~ 洗得好干净！'},
-    play:{cd:7200000,happiness:20,exp:15,msg:'🎾 招招玩得好开心！+20开心 +15经验',speak:'喵喵喵~ 好好玩！'}
+    pet:{cd:3600000,happiness:8,exp:5,msg:'🐱 招招很享受你的抚摸！+8开心 +5经验',speak:'好舒服呀，谢谢你摸我！'},
+    wash:{cd:14400000,cleanliness:30,exp:10,msg:'🛁 招招洗得干干净净！+30清洁 +10经验',speak:'洗得好干净，我太开心啦！'},
+    play:{cd:7200000,happiness:20,exp:15,msg:'🎾 招招玩得好开心！+20开心 +15经验',speak:'好好玩呀，再陪我玩一会儿吧！'}
   }[type];
   if(!cfg)return;
   if(pet[cfg.field]){
@@ -936,15 +936,15 @@ function usePetItem(type){
   // 小猫反馈声音
   const cat=item.cat||'';
   if(cat==='food'||cat==='snack'){
-    toast('🐱 喵~ 太好吃啦！谢谢你！','喵~ 太好吃啦！谢谢你！');
+    toast('🐱 喵~ 太好吃啦！谢谢你！','太好吃啦，谢谢你！');
   }else if(cat==='toy'){
-    toast('🐱 喵呜~ 好好玩！','喵呜~ 好好玩！');
+    toast('🐱 喵呜~ 好好玩！','好好玩呀，再陪我玩一会儿吧！');
   }else if(cat==='cloth'){
-    toast('🐱 喵~ 好漂亮！谢谢！','喵~ 好漂亮！谢谢！');
+    toast('🐱 喵~ 好漂亮！谢谢！','好漂亮呀，我太喜欢了，谢谢你！');
   }else if(cat==='clean'){
-    toast('🐱 喵呜~ 好舒服！干干净净！','喵呜~ 好舒服！干干净净！');
+    toast('🐱 喵呜~ 好舒服！干干净净！','好舒服呀，我现在干干净净的！');
   }else{
-    toast('🐱 喵~ 谢谢！','喵~ 谢谢！');
+    toast('🐱 喵~ 谢谢！','谢谢你！');
   }
 }
 
