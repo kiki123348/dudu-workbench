@@ -304,7 +304,7 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
   <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('planModal')">取消</button><button class="btn btn-primary" id="planSaveBtn">保存</button></div></div></div>
 
 <!-- 宠物商店弹窗 -->
-<div class="modal-mask" id="shopModal"><div class="modal" style="width:480px"><h3>🏪 招招商店</h3>
+<div class="modal-mask" id="shopModal"><div class="modal" style="width:520px"><h3>🏪 招招商店</h3>
   <div id="shopContent"></div>
   <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('shopModal')">关闭</button></div></div></div>
 
@@ -329,7 +329,7 @@ const def={
   sidebarItems:[
     {id:'workbench',icon:'📖',name:'工作台',builtin:true},
     {id:'reward',icon:'🎁',name:'奖励中心',builtin:true},
-    {id:'pvz',icon:'🐱',name:'招招',builtin:true},
+    {id:'pvz',icon:'🐱',name:'云养宠物',builtin:true},
     {id:'vision',icon:'👁️',name:'视力训练',builtin:true},
     {id:'stats',icon:'📊',name:'打卡统计',builtin:true},
     {id:'english',icon:'🔤',name:'每日英语',builtin:true},
@@ -388,14 +388,33 @@ const def={
 };
 
 const PET_SHOP=[
-  {type:'fish',emoji:'🐟',name:'小鱼干',cost:30,desc:'+30饱腹',effect:'hunger',val:30},
-  {type:'milk',emoji:'🥛',name:'牛奶',cost:40,desc:'+20饱腹+10开心',effect:'both',val1:20,val2:10},
-  {type:'catfood',emoji:'🍖',name:'猫粮',cost:50,desc:'+50饱腹',effect:'hunger',val:50},
-  {type:'snack',emoji:'🍬',name:'小零食',cost:20,desc:'+15开心',effect:'happiness',val:15},
-  {type:'toy',emoji:'🎾',name:'逗猫棒',cost:80,desc:'+30开心',effect:'happiness',val:30},
-  {type:'shampoo',emoji:'🧴',name:'沐浴露',cost:60,desc:'+40清洁',effect:'cleanliness',val:40},
-  {type:'treat',emoji:'🎂',name:'猫蛋糕',cost:150,desc:'+50饱腹+30开心',effect:'both',val1:50,val2:30},
-  {type:'collar',emoji:'🎀',name:'蝴蝶结',cost:200,desc:'+50经验',effect:'exp',val:50}
+  // 食物
+  {type:'fish',emoji:'🐟',name:'小鱼干',cost:30,desc:'+30饱腹',effect:'hunger',val:30,cat:'food'},
+  {type:'milk',emoji:'🥛',name:'牛奶',cost:40,desc:'+20饱腹+10开心',effect:'both',val1:20,val2:10,cat:'food'},
+  {type:'catfood',emoji:'🍖',name:'猫粮',cost:50,desc:'+50饱腹',effect:'hunger',val:50,cat:'food'},
+  {type:'treat',emoji:'🎂',name:'猫蛋糕',cost:150,desc:'+50饱腹+30开心',effect:'both',val1:50,val2:30,cat:'food'},
+  // 零食
+  {type:'snack',emoji:'🍬',name:'小零食',cost:20,desc:'+15开心',effect:'happiness',val:15,cat:'snack'},
+  {type:'candy',emoji:'🍭',name:'棒棒糖',cost:25,desc:'+20开心',effect:'happiness',val:20,cat:'snack'},
+  {type:'cookie',emoji:'🍪',name:'猫饼干',cost:35,desc:'+20饱腹+15开心',effect:'both',val1:20,val2:15,cat:'snack'},
+  {type:'icecream',emoji:'🍨',name:'猫冰淇淋',cost:45,desc:'+25饱腹+20开心',effect:'both',val1:25,val2:20,cat:'snack'},
+  // 玩具
+  {type:'toy',emoji:'🎾',name:'逗猫棒',cost:80,desc:'+30开心',effect:'happiness',val:30,cat:'toy'},
+  {type:'ball',emoji:'⚽',name:'小皮球',cost:60,desc:'+25开心',effect:'happiness',val:25,cat:'toy'},
+  {type:'mouse',emoji:'🐭',name:'玩具老鼠',cost:70,desc:'+35开心',effect:'happiness',val:35,cat:'toy'},
+  {type:'laser',emoji:'🔴',name:'激光笔',cost:90,desc:'+40开心',effect:'happiness',val:40,cat:'toy'},
+  {type:'fishrod',emoji:'🎣',name:'钓鱼竿玩具',cost:100,desc:'+45开心',effect:'happiness',val:45,cat:'toy'},
+  // 衣服装饰
+  {type:'collar',emoji:'🎀',name:'蝴蝶结',cost:200,desc:'+50经验',effect:'exp',val:50,cat:'cloth'},
+  {type:'hat',emoji:'🎩',name:'小帽子',cost:180,desc:'+45经验',effect:'exp',val:45,cat:'cloth'},
+  {type:'scarf',emoji:'🧣',name:'小围巾',cost:160,desc:'+40经验',effect:'exp',val:40,cat:'cloth'},
+  {type:'cape',emoji:'🦸',name:'小披风',cost:250,desc:'+60经验',effect:'exp',val:60,cat:'cloth'},
+  {type:'crown',emoji:'👑',name:'小皇冠',cost:300,desc:'+80经验',effect:'exp',val:80,cat:'cloth'},
+  {type:'glasses',emoji:'🕶️',name:'酷墨镜',cost:220,desc:'+55经验',effect:'exp',val:55,cat:'cloth'},
+  // 清洁
+  {type:'shampoo',emoji:'🧴',name:'沐浴露',cost:60,desc:'+40清洁',effect:'cleanliness',val:40,cat:'clean'},
+  {type:'brush',emoji:'🪥',name:'梳毛刷',cost:45,desc:'+30清洁+10开心',effect:'both',val1:30,val2:10,cat:'clean'},
+  {type:'perfume',emoji:'🌹',name:'猫咪香水',cost:80,desc:'+50清洁+20开心',effect:'both',val1:50,val2:20,cat:'clean'}
 ];
 
 const engWords=[
@@ -433,7 +452,7 @@ function load(){
 function save(){localStorage.setItem(K,JSON.stringify(S));}
 let S=load();
 let nid=500,curPage='workbench',curSubject=null,editErrId=null,editPlanId=null,editingTaskId=null,currentSubject='yuwen';
-const pageTitles={workbench:'嘟嘟暑假学习工作台',errorbook:'错题本',reward:'奖励中心',pvz:'招招宠物',vision:'视力训练',stats:'打卡统计',english:'每日英语',plan:'近期计划',docu:'纪录片'};
+const pageTitles={workbench:'嘟嘟暑假学习工作台',errorbook:'错题本',reward:'奖励中心',pvz:'云养宠物',vision:'视力训练',stats:'打卡统计',english:'每日英语',plan:'近期计划',docu:'纪录片'};
 
 // ========== 渲染 ==========
 function renderSidebar(){
@@ -718,10 +737,13 @@ function renderPVZ(){
   let coinRows='';
   S.subjectOrder.forEach(k=>{
     const sub=S.subjects[k];
-    const doneCount=sub.tasks.filter(t=>t.done).length;
-    if(doneCount>0){
-      coinRows+=`<div class="pet-stat-row"><span class="pet-stat-icon">${sub.icon}</span><span class="pet-stat-label" style="flex:1">${sub.name}·完成${doneCount}项</span><span class="pet-stat-val" style="color:var(--green)">+${doneCount*10}</span></div>`;
-    }
+    if(!sub)return;
+    sub.tasks.filter(t=>t.done).forEach(t=>{
+      coinRows+=`<div class="pet-stat-row"><span class="pet-stat-icon">${sub.icon}</span><span class="pet-stat-label" style="flex:1;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">✓ ${esc(t.text)}</span><span class="pet-stat-val" style="color:var(--green)">+10💰</span></div>`;
+      if(t.streak>0&&t.streak%3===0){
+        coinRows+=`<div class="pet-stat-row"><span class="pet-stat-icon">🔥</span><span class="pet-stat-label" style="flex:1;font-size:11px">连续${t.streak}天·${sub.name}</span><span class="pet-stat-val" style="color:var(--green)">+5💰</span></div>`;
+      }
+    });
   });
   if(!coinRows)coinRows='<div style="text-align:center;color:var(--sub);font-size:12px;padding:8px">今天还没完成学习任务哦~</div>';
 
@@ -831,16 +853,32 @@ function checkLevelUp(){
 }
 
 function openPetShop(){
-  let shop='';
+  const cats=[
+    {id:'food',name:'🍖 食物',items:[]},
+    {id:'snack',name:'🍬 零食',items:[]},
+    {id:'toy',name:'🎾 玩具',items:[]},
+    {id:'cloth',name:'👗 衣服装饰',items:[]},
+    {id:'clean',name:'🧴 清洁用品',items:[]}
+  ];
   PET_SHOP.forEach(item=>{
-    shop+=`<div class="pet-shop-item" onclick="buyPetItem('${item.type}')">
-      <div class="pet-shop-emoji">${item.emoji}</div>
-      <div class="pet-shop-name">${item.name}</div>
-      <div class="pet-shop-desc">${item.desc}</div>
-      <div class="pet-shop-cost">💰${item.cost}</div>
-    </div>`;
+    const c=cats.find(x=>x.id===item.cat);
+    if(c)c.items.push(item);
   });
-  document.getElementById('shopContent').innerHTML=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px">${shop}</div>`;
+  let shop='';
+  cats.forEach(cat=>{
+    if(cat.items.length===0)return;
+    shop+=`<div style="font-size:13px;font-weight:700;padding:8px 12px 0;color:var(--text)">${cat.name}</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px 12px 12px">`;
+    cat.items.forEach(item=>{
+      shop+=`<div class="pet-shop-item" onclick="buyPetItem('${item.type}')">
+        <div class="pet-shop-emoji">${item.emoji}</div>
+        <div class="pet-shop-name">${item.name}</div>
+        <div class="pet-shop-desc">${item.desc}</div>
+        <div class="pet-shop-cost">💰${item.cost}</div>
+      </div>`;
+    });
+    shop+='</div>';
+  });
+  document.getElementById('shopContent').innerHTML=shop;
   document.getElementById('shopModal').classList.add('show');
 }
 
