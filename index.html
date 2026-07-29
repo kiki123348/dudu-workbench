@@ -188,60 +188,51 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 .reward-add-bar:hover{background:#3d51b3;transform:translateX(-50%) scale(1.05)}
 .reward-add-icon{font-size:18px}
 
-/* ====== PVZ 新样式 ====== */
-.pvz-wrap{display:flex;flex-direction:column;gap:10px;padding:16px 20px}
-.pvz-top-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.pvz-card{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:center}
-.pvz-card .pvz-card-icon{font-size:28px;margin-bottom:4px}
-.pvz-card .pvz-card-num{font-size:28px;font-weight:700;color:#5D4037}
-.pvz-card .pvz-card-label{font-size:11px;color:var(--sub);margin-top:2px}
-.pvz-card.sun{background:linear-gradient(135deg,#fff8e1,#fff3e0)}
-.pvz-card.streak{background:linear-gradient(135deg,#ffebee,#fce4ec)}
-.pvz-card.streak .pvz-card-num{color:var(--red)}
-.pvz-garden{background:linear-gradient(180deg,#81c784 0%,#66bb6a 100%);border-radius:var(--radius);padding:10px;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.pvz-garden-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 4px}
-.pvz-garden-header .left,.pvz-garden-header .right{display:flex;align-items:center;gap:4px;font-size:11px;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,0.3)}
-.pvz-grid{display:grid;grid-template-columns:40px repeat(7,1fr) 40px;gap:4px}
-.pvz-grid-row{display:contents}
-.pvz-grid-base{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
-.pvz-grid-base .base-icon{font-size:20px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))}
-.pvz-grid-base .base-label{font-size:8px;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,0.3);text-align:center;line-height:1}
-.pvz-grid-cell{background:rgba(255,255,255,0.25);border-radius:6px;display:flex;align-items:center;justify-content:center;aspect-ratio:1;position:relative;cursor:pointer;transition:all 0.2s;border:1.5px dashed rgba(255,255,255,0.4);font-size:20px}
-.pvz-grid-cell:hover{background:rgba(255,255,255,0.4);border-color:#FFD54F}
-.pvz-grid-cell.has-plant{background:rgba(255,255,255,0.45);border-style:solid;border-color:rgba(255,255,255,0.5);animation:plantBounce 2.5s ease-in-out infinite;cursor:default}
-.pvz-grid-cell.has-plant:hover{transform:scale(1.1);animation:none}
-.pvz-grid-cell .plant-label{position:absolute;bottom:1px;font-size:7px;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,0.5);white-space:nowrap}
-.pvz-grid-zombie{display:flex;align-items:center;justify-content:center;position:relative}
-.pvz-grid-zombie .zombie-icon{font-size:24px;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.4));animation:zombieRage 0.5s ease-in-out infinite}
-.pvz-grid-zombie .zombie-label{position:absolute;top:-10px;font-size:8px;background:rgba(244,67,54,0.9);color:#fff;padding:0 3px;border-radius:4px;white-space:nowrap;font-weight:700}
-.pvz-grid-zombie.frozen .zombie-icon{opacity:0.5;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.4)) brightness(1.4) saturate(0.3)}
-.pvz-garden-footer{display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:0 4px;font-size:10px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.3)}
-.pvz-garden-footer .total{font-weight:700}
-.pvz-energy-section{background:#fff;border-radius:var(--radius);padding:12px;box-shadow:var(--shadow)}
-.pvz-energy-title{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
-.pvz-energy-title .add-btn{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
-.pvz-energy-list{display:flex;flex-direction:column;gap:4px}
-.pvz-energy-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f2f5;font-size:12px}
-.pvz-energy-row:last-child{border-bottom:none}
-.pvz-energy-row .name{color:var(--text)}
-.pvz-energy-row .val{font-weight:700;color:var(--green);font-size:13px}
-.pvz-energy-total{display:flex;align-items:center;justify-content:space-between;padding:8px 0;margin-top:4px;border-top:2px solid #e0e3e9;font-size:13px;font-weight:700}
-.pvz-energy-total .total-label{color:var(--sub)}
-.pvz-energy-total .total-val{color:var(--green);font-size:15px}
-.pvz-shop-btn{position:fixed;right:16px;bottom:16px;width:48px;height:48px;background:linear-gradient(135deg,#ff9800,#f57c00);color:#fff;border-radius:50%;border:none;cursor:pointer;font-size:20px;box-shadow:var(--shadow-lg);display:flex;align-items:center;justify-content:center;z-index:100;transition:all 0.2s}
-.pvz-shop-btn:hover{transform:scale(1.1)}
-.pvz-shop-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px}
-.pvz-shop-item{background:#fafbfc;border-radius:8px;padding:8px;text-align:center;cursor:pointer;transition:all 0.2s;border:1.5px solid transparent}
-.pvz-shop-item:hover{border-color:#FFD54F;transform:translateY(-2px);box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-.pvz-shop-item.locked{opacity:0.4;cursor:not-allowed;filter:grayscale(0.5)}
-.pvz-shop-item.locked:hover{transform:none;border-color:transparent;box-shadow:none}
-.pvz-shop-item.owned{background:rgba(200,230,201,0.3);border-color:#4caf50}
-.pvz-shop-emoji{font-size:28px;margin-bottom:2px}
-.pvz-shop-name{font-size:10px;font-weight:600;color:var(--text);margin-bottom:1px}
-.pvz-shop-desc{font-size:8px;color:var(--sub);line-height:1.2;margin-bottom:2px}
-.pvz-shop-cost{font-size:10px;font-weight:700;color:#f57c00}
-@keyframes plantBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
-@keyframes zombieRage{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+/* ====== 宠物招招样式 ====== */
+.pet-wrap{display:flex;flex-direction:column;gap:12px;padding:16px 20px}
+.pet-top-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pet-card{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:center}
+.pet-card .pet-card-icon{font-size:28px;margin-bottom:4px}
+.pet-card .pet-card-num{font-size:28px;font-weight:700;color:#5D4037}
+.pet-card .pet-card-label{font-size:11px;color:var(--sub);margin-top:2px}
+.pet-card.coins{background:linear-gradient(135deg,#fff8e1,#fff3e0)}
+.pet-card.streak{background:linear-gradient(135deg,#ffebee,#fce4ec)}
+.pet-card.streak .pet-card-num{color:var(--red)}
+.pet-stage{background:linear-gradient(180deg,#e8f5e9,#c8e6c9);border-radius:var(--radius);padding:24px 16px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.pet-emoji{font-size:80px;animation:petBounce 2s ease-in-out infinite;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15))}
+.pet-name{font-size:22px;font-weight:700;color:#333;margin-top:8px}
+.pet-level{font-size:14px;color:#666;margin-top:4px}
+.pet-exp-bar{width:80%;height:8px;background:rgba(0,0,0,0.1);border-radius:4px;margin:10px auto 0;overflow:hidden}
+.pet-exp-fill{height:100%;background:linear-gradient(90deg,#4caf50,#66bb6a);border-radius:4px;transition:width 0.5s}
+.pet-stats{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.pet-stat-row{display:flex;align-items:center;gap:8px}
+.pet-stat-icon{font-size:20px;width:28px;text-align:center}
+.pet-stat-label{font-size:12px;color:var(--sub);width:50px}
+.pet-stat-bar{flex:1;height:14px;background:#f0f2f5;border-radius:7px;overflow:hidden;position:relative}
+.pet-stat-fill{height:100%;border-radius:7px;transition:width 0.5s}
+.pet-stat-fill.hunger{background:linear-gradient(90deg,#ff7043,#ff5722)}
+.pet-stat-fill.happiness{background:linear-gradient(90deg,#ffb74d,#ff9800)}
+.pet-stat-fill.cleanliness{background:linear-gradient(90deg,#4fc3f7,#29b6f6)}
+.pet-stat-val{font-size:11px;font-weight:700;color:var(--text);width:36px;text-align:right}
+.pet-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pet-action{background:#fff;border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;box-shadow:var(--shadow);transition:all 0.2s;border:2px solid transparent}
+.pet-action:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
+.pet-action.disabled{opacity:0.5;pointer-events:none}
+.pet-action-icon{font-size:28px;margin-bottom:4px}
+.pet-action-name{font-size:12px;font-weight:600;color:var(--text)}
+.pet-action-cd{font-size:10px;color:var(--sub);margin-top:2px}
+.pet-shop-item{background:#fafbfc;border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:all 0.2s;border:1.5px solid transparent}
+.pet-shop-item:hover{border-color:#FFD54F;transform:translateY(-2px);box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.pet-shop-emoji{font-size:32px;margin-bottom:2px}
+.pet-shop-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:1px}
+.pet-shop-desc{font-size:9px;color:var(--sub);line-height:1.2;margin-bottom:3px}
+.pet-shop-cost{font-size:11px;font-weight:700;color:#f57c00}
+.pet-inv-item{background:#fafbfc;border-radius:8px;padding:8px;text-align:center;cursor:pointer;transition:all 0.2s;border:1.5px solid transparent;position:relative}
+.pet-inv-item:hover{border-color:#4caf50;transform:scale(1.05)}
+.pet-inv-emoji{font-size:28px}
+.pet-inv-count{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+@keyframes petBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes petHappy{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-5px) rotate(-5deg)}75%{transform:translateY(-5px) rotate(5deg)}}
 /* 视力训练 */
 .vision-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
 .vision-card{background:#fff;border-radius:12px;padding:16px;text-align:center;cursor:pointer;box-shadow:var(--shadow);transition:all 0.2s;border:2px solid transparent;position:relative}
@@ -312,17 +303,22 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
   <div class="form-group"><label>描述</label><textarea id="planDesc"></textarea></div>
   <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('planModal')">取消</button><button class="btn btn-primary" id="planSaveBtn">保存</button></div></div></div>
 
-<!-- 植物商店弹窗 -->
-<div class="modal-mask" id="shopModal"><div class="modal" style="width:480px"><h3>🏪 植物商店</h3>
+<!-- 宠物商店弹窗 -->
+<div class="modal-mask" id="shopModal"><div class="modal" style="width:480px"><h3>🏪 招招商店</h3>
   <div id="shopContent"></div>
   <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('shopModal')">关闭</button></div></div></div>
 
-<!-- 植物详情弹窗 -->
+<!-- 物品使用弹窗 -->
 <div class="modal-mask" id="plantDetailModal"><div class="modal" style="width:380px;text-align:center">
   <div style="font-size:60px" id="plantDetailEmoji"></div>
   <h3 id="plantDetailName" style="margin:8px 0"></h3>
   <p style="color:var(--sub);font-size:13px;margin-bottom:12px" id="plantDetailDesc"></p>
   <div class="modal-actions" style="justify-content:center"><button class="btn btn-secondary" onclick="closeModal('plantDetailModal')">知道了</button></div></div></div>
+
+<!-- 背包弹窗 -->
+<div class="modal-mask" id="invModal"><div class="modal" style="width:420px"><h3>🎒 招招的背包</h3>
+  <div id="invContent"></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('invModal')">关闭</button></div></div></div>
 
 <div class="toast" id="toast"></div>
 
@@ -333,7 +329,7 @@ const def={
   sidebarItems:[
     {id:'workbench',icon:'📖',name:'工作台',builtin:true},
     {id:'reward',icon:'🎁',name:'奖励中心',builtin:true},
-    {id:'pvz',icon:'🌻',name:'植物大战',builtin:true},
+    {id:'pvz',icon:'🐱',name:'招招',builtin:true},
     {id:'vision',icon:'👁️',name:'视力训练',builtin:true},
     {id:'stats',icon:'📊',name:'打卡统计',builtin:true},
     {id:'english',icon:'🔤',name:'每日英语',builtin:true},
@@ -365,14 +361,10 @@ const def={
   englishIdx:0,
   plans:[{id:401,date:'2026-07-30',title:'去图书馆借书',desc:'借3本暑假阅读书目'}],
   pvz:{
-    sun:250,coins:5,baseHealth:3,
-    plants:[],
-    zombies:[
-      {id:'z1',name:'读报僵尸',lane:'yuwen',position:1,emoji:'🧟',frozen:false},
-      {id:'z2',name:'路障僵尸',lane:'shuxue',position:1,emoji:'🧟‍♂️',frozen:false},
-      {id:'z3',name:'舞王僵尸',lane:'yingyu',position:1,emoji:'🧟‍♀️',frozen:false}
-    ],
-    achievements:[],
+    sun:50,
+    pet:{name:'招招',emoji:'🐱',level:1,exp:0,hunger:80,happiness:80,cleanliness:80,
+         lastFeed:'',lastPet:'',lastWash:'',lastPlay:''},
+    inventory:[],
     todayChecked:false,lastCheckDate:'',
     streakDays:0
   },
@@ -395,22 +387,15 @@ const def={
   rewardNextId:6
 };
 
-const PLANT_DEFS=[
-  {type:'sunflower',emoji:'🌻',name:'向日葵',cost:100,desc:'每天额外+20☀️',unlock:0,effect:'daily_sun',effectVal:20},
-  {type:'sunshroom',emoji:'🍄',name:'阳光菇',cost:150,desc:'每天额外+10☀️',unlock:3,effect:'daily_sun',effectVal:10},
-  {type:'peashooter',emoji:'🌿',name:'豌豆射手',cost:200,desc:'僵尸前进速度减半',unlock:5,effect:'slow_zombie'},
-  {type:'kernelpult',emoji:'🌽',name:'玉米投手',cost:250,desc:'每天随机获得金币',unlock:8,effect:'random_coin'},
-  {type:'wallnut',emoji:'🥔',name:'坚果墙',cost:300,desc:'保护植物不被吃掉1次',unlock:10,effect:'shield'},
-  {type:'iceShroom',emoji:'🧊',name:'寒冰菇',cost:350,desc:'冻结一只僵尸1天',unlock:12,effect:'freeze'},
-  {type:'jalapeno',emoji:'🌶️',name:'辣椒',cost:400,desc:'当天未完成任务免疫1次',unlock:15,effect:'immune'},
-  {type:'cherryBomb',emoji:'🍒',name:'樱桃炸弹',cost:500,desc:'击退所有僵尸3格！',unlock:20,effect:'push_all'}
-];
-
-const ACHIEVEMENTS=[
-  {id:'master',name:'🌟植物大师',desc:'拥有5种植物',icon:'🌿'},
-  {id:'streak',name:'🔥连击达人',desc:'连续7天全勤',icon:'🔥'},
-  {id:'defense',name:'🛡️防线固守',desc:'僵尸从未进入基地',icon:'🏰'},
-  {id:'rich',name:'💰阳光富翁',desc:'攒够1000阳光',icon:'💰'}
+const PET_SHOP=[
+  {type:'fish',emoji:'🐟',name:'小鱼干',cost:30,desc:'+30饱腹',effect:'hunger',val:30},
+  {type:'milk',emoji:'🥛',name:'牛奶',cost:40,desc:'+20饱腹+10开心',effect:'both',val1:20,val2:10},
+  {type:'catfood',emoji:'🍖',name:'猫粮',cost:50,desc:'+50饱腹',effect:'hunger',val:50},
+  {type:'snack',emoji:'🍬',name:'小零食',cost:20,desc:'+15开心',effect:'happiness',val:15},
+  {type:'toy',emoji:'🎾',name:'逗猫棒',cost:80,desc:'+30开心',effect:'happiness',val:30},
+  {type:'shampoo',emoji:'🧴',name:'沐浴露',cost:60,desc:'+40清洁',effect:'cleanliness',val:40},
+  {type:'treat',emoji:'🎂',name:'猫蛋糕',cost:150,desc:'+50饱腹+30开心',effect:'both',val1:50,val2:30},
+  {type:'collar',emoji:'🎀',name:'蝴蝶结',cost:200,desc:'+50经验',effect:'exp',val:50}
 ];
 
 const engWords=[
@@ -439,6 +424,7 @@ function load(){
       if(!data.sidebarNextId) data.sidebarNextId=def.sidebarNextId;
       if(!data.rewards) data.rewards=def.rewards;
       if(!data.rewardNextId) data.rewardNextId=def.rewardNextId;
+      if(data.pvz && !data.pvz.pet){data.pvz.pet=def.pvz.pet;data.pvz.inventory=[];}
       return data;
     }
   }catch(e){}
@@ -447,7 +433,7 @@ function load(){
 function save(){localStorage.setItem(K,JSON.stringify(S));}
 let S=load();
 let nid=500,curPage='workbench',curSubject=null,editErrId=null,editPlanId=null,editingTaskId=null,currentSubject='yuwen';
-const pageTitles={workbench:'嘟嘟暑假学习工作台',errorbook:'错题本',reward:'奖励中心',pvz:'植物大战',vision:'视力训练',stats:'打卡统计',english:'每日英语',plan:'近期计划',docu:'纪录片'};
+const pageTitles={workbench:'嘟嘟暑假学习工作台',errorbook:'错题本',reward:'奖励中心',pvz:'招招宠物',vision:'视力训练',stats:'打卡统计',english:'每日英语',plan:'近期计划',docu:'纪录片'};
 
 // ========== 渲染 ==========
 function renderSidebar(){
@@ -523,7 +509,7 @@ function render(p){
   document.getElementById('content').classList.toggle('pvz-page',curPage==='pvz');
   document.querySelector('.main').classList.toggle('pvz-page',curPage==='pvz');
   renderSidebar();
-  if(curPage==='pvz'){initPVZ();}
+  if(curPage==='pvz'){initPet();}
 }
 
 // ====== 工作台 ======
@@ -638,7 +624,7 @@ function renderReward(){
       <div class="reward-emoji">${r.emoji}</div>
       <div class="reward-info">
         <div class="reward-name">${r.name}</div>
-        <div class="reward-cost">${r.cost} <span class="sun-icon">☀️</span></div>
+        <div class="reward-cost">${r.cost} <span class="sun-icon">💰</span></div>
       </div>
       <div class="reward-actions">
         <span class="reward-edit" onclick="editReward(${r.id})">✎</span>
@@ -650,9 +636,9 @@ function renderReward(){
 
   return `<div class="page-title">🎁 奖励中心</div><div class="page-subtitle">${getDateStr()}</div>
     <div class="reward-sun-card">
-      <div class="reward-sun-icon">☀️</div>
+      <div class="reward-sun-icon">💰</div>
       <div class="reward-sun-num">${p.sun}</div>
-      <div class="reward-sun-label">可用阳光</div>
+      <div class="reward-sun-label">可用金币</div>
     </div>
     <div class="reward-section">
       <div class="reward-header">
@@ -697,237 +683,230 @@ function delReward(id){
   save();render();toast('已删除');
 }
 
-// ====== PVZ 战场 ======
+// ====== 招招宠物 ======
 function renderPVZ(){
   const p=S.pvz;
-  const lanes=[
-    {k:'yuwen',n:'语文',icon:'📖',zEmoji:'🧟',zName:'读报僵尸'},
-    {k:'shuxue',n:'数学',icon:'🔢',zEmoji:'🧟‍♂️',zName:'路障僵尸'},
-    {k:'yingyu',n:'英语',icon:'🔤',zEmoji:'🧟‍♀️',zName:'舞王僵尸'}
-  ];
+  const pet=p.pet;
+  const expNeed=pet.level*100;
+  const expPct=Math.round(pet.exp/expNeed*100);
 
-  // 计算连续天数
-  const allDone=Object.values(S.subjects).every(sub=>sub.tasks.every(t=>t.done));
-  if(allDone)p.streakDays=(p.streakDays||0)+1;
-
-  // 花园网格
-  let gridRows='';
-  lanes.forEach((lane,i)=>{
-    const z=p.zombies.find(x=>x.lane===lane.k);
-    const pos=z?z.position:0;
-    const lanePlants=p.plants.filter(x=>x.row===i);
-
-    // 基地列
-    const basePlants=lanePlants.filter(x=>x.col===0);
-    const basePlant=basePlants[0];
-    const baseContent=basePlant?(()=>{
-      const pd=PLANT_DEFS.find(x=>x.type===basePlant.type);
-      return `<div class="base-icon">${pd?pd.emoji:'🌱'}</div><div class="base-label">${pd?pd.name:''}</div>`;
-    })():`<div class="base-icon">🏠</div><div class="base-label">基地</div>`;
-
-    // 植物列（1-7）
-    let cells='';
-    for(let c=1;c<=7;c++){
-      const plant=lanePlants.find(x=>x.col===c);
-      if(plant){
-        const pd=PLANT_DEFS.find(x=>x.type===plant.type);
-        cells+=`<div class="pvz-grid-cell has-plant" onclick="showPlantDetail('${plant.type}')">${pd?pd.emoji:'🌱'}${pd?`<div class="plant-label">${pd.name}</div>`:''}</div>`;
-      }else{
-        cells+=`<div class="pvz-grid-cell" onclick="onCellClick(${i},${c})">+</div>`;
-      }
-    }
-
-    // 僵尸列
-    const zombieHtml=z?`<div class="pvz-grid-zombie${z.frozen?' frozen':''}"><span class="zombie-icon">${z.emoji}</span><span class="zombie-label">${pos>=7?'⚠️危险':pos+'/'+8}</span></div>`:'';
-
-    gridRows+=`<div class="pvz-grid-row">
-      <div class="pvz-grid-base">${baseContent}</div>
-      ${cells}
-      <div class="pvz-grid-zombie">${zombieHtml}</div>
+  // 状态条
+  const statBar=(icon,label,val,cls)=>{
+    const v=Math.max(0,Math.min(100,val));
+    return `<div class="pet-stat-row">
+      <span class="pet-stat-icon">${icon}</span>
+      <span class="pet-stat-label">${label}</span>
+      <div class="pet-stat-bar"><div class="pet-stat-fill ${cls}" style="width:${v}%"></div></div>
+      <span class="pet-stat-val">${Math.round(v)}</span>
     </div>`;
-  });
+  };
 
-  // 今日能量明细
-  let energyRows='',todayTotal=0;
+  // 互动按钮
+  const now=Date.now();
+  const cdInfo=(last,cd)=>{
+    if(!last)return '';
+    const remain=cd-(now-parseInt(last));
+    if(remain<=0)return '';
+    const min=Math.ceil(remain/60000);
+    return min>=60?Math.ceil(min/60)+'小时后':min+'分钟后';
+  };
+  const petCd=cdInfo(pet.lastPet,3600000);
+  const washCd=cdInfo(pet.lastWash,14400000);
+  const playCd=cdInfo(pet.lastPlay,7200000);
+
+  // 今日金币明细
+  let coinRows='';
   S.subjectOrder.forEach(k=>{
     const sub=S.subjects[k];
     const doneCount=sub.tasks.filter(t=>t.done).length;
     if(doneCount>0){
-      const earn=doneCount*50;todayTotal+=earn;
-      energyRows+=`<div class="pvz-energy-row"><span class="name">${sub.icon} ${sub.name} · 完成${doneCount}项</span><span class="val">+${earn}☀️</span></div>`;
-      sub.tasks.filter(t=>t.done&&t.streak>=3).forEach(t=>{
-        todayTotal+=10;
-        energyRows+=`<div class="pvz-energy-row"><span class="name">🔥 ${sub.name} · 连续${t.streak}天</span><span class="val">+10☀️</span></div>`;
-      });
+      coinRows+=`<div class="pet-stat-row"><span class="pet-stat-icon">${sub.icon}</span><span class="pet-stat-label" style="flex:1">${sub.name}·完成${doneCount}项</span><span class="pet-stat-val" style="color:var(--green)">+${doneCount*10}</span></div>`;
     }
   });
-  p.plants.forEach(pl=>{
-    const pd=PLANT_DEFS.find(x=>x.type===pl.type);
-    if(pd&&pd.effect==='daily_sun'){todayTotal+=pd.effectVal;energyRows+=`<div class="pvz-energy-row"><span class="name">${pd.emoji} ${pd.name}产出</span><span class="val">+${pd.effectVal}☀️</span></div>`;}
-  });
-  if(!energyRows)energyRows='<div class="pvz-energy-row"><span class="name">今天还没有完成学习任务哦</span><span class="val">0☀️</span></div>';
+  if(!coinRows)coinRows='<div style="text-align:center;color:var(--sub);font-size:12px;padding:8px">今天还没完成学习任务哦~</div>';
 
-  return `<div class="pvz-wrap">
-    <div class="pvz-top-cards">
-      <div class="pvz-card sun">
-        <div class="pvz-card-icon">☀️</div>
-        <div class="pvz-card-num">${p.sun}</div>
-        <div class="pvz-card-label">阳光</div>
+  return `<div class="pet-wrap">
+    <div class="pet-top-cards">
+      <div class="pet-card coins">
+        <div class="pet-card-icon">💰</div>
+        <div class="pet-card-num">${p.sun}</div>
+        <div class="pet-card-label">金币</div>
       </div>
-      <div class="pvz-card streak">
-        <div class="pvz-card-icon">🔥</div>
-        <div class="pvz-card-num">${p.streakDays}</div>
-        <div class="pvz-card-label">连续天数</div>
-      </div>
-    </div>
-    <div class="pvz-garden">
-      <div class="pvz-garden-header">
-        <div class="left">🏠 嘟嘟的花园基地</div>
-        <div class="right">🌿 三路僵尸待命中，继续保持！</div>
-      </div>
-      <div class="pvz-grid">${gridRows}</div>
-      <div class="pvz-garden-footer">
-        <span class="hint">👆 点空格选植物种下，点植物收回仓库</span>
-        <span class="total">${p.sun}</span>
+      <div class="pet-card streak">
+        <div class="pet-card-icon">🔥</div>
+        <div class="pet-card-num">${p.streakDays}</div>
+        <div class="pet-card-label">连续天数</div>
       </div>
     </div>
-    <div class="pvz-energy-section">
-      <div class="pvz-energy-title">⚡ 今日能量 <span class="add-btn" onclick="openShop()">+</span></div>
-      <div class="pvz-energy-list">${energyRows}</div>
-      <div class="pvz-energy-total"><span class="total-label">📊 合计</span><span class="total-val">+${todayTotal}☀️</span></div>
+    <div class="pet-stage">
+      <div class="pet-emoji">${pet.emoji}</div>
+      <div class="pet-name">${pet.name}</div>
+      <div class="pet-level">Lv.${pet.level} · ${pet.exp}/${expNeed} EXP</div>
+      <div class="pet-exp-bar"><div class="pet-exp-fill" style="width:${expPct}%"></div></div>
+    </div>
+    <div class="pet-stats">
+      ${statBar('🍖','饱腹',pet.hunger,'hunger')}
+      ${statBar('😊','开心',pet.happiness,'happiness')}
+      ${statBar('🛁','清洁',pet.cleanliness,'cleanliness')}
+    </div>
+    <div class="pet-actions">
+      <div class="pet-action${petCd?' disabled':''}" onclick="petInteract('pet')">
+        <div class="pet-action-icon">🐱</div>
+        <div class="pet-action-name">摸摸</div>
+        <div class="pet-action-cd">${petCd||'+5 EXP'}</div>
+      </div>
+      <div class="pet-action" onclick="openInventory()">
+        <div class="pet-action-icon">🐟</div>
+        <div class="pet-action-name">喂食</div>
+        <div class="pet-action-cd">背包</div>
+      </div>
+      <div class="pet-action${washCd?' disabled':''}" onclick="petInteract('wash')">
+        <div class="pet-action-icon">🛁</div>
+        <div class="pet-action-name">洗澡</div>
+        <div class="pet-action-cd">${washCd||'+10 EXP'}</div>
+      </div>
+      <div class="pet-action${playCd?' disabled':''}" onclick="petInteract('play')">
+        <div class="pet-action-icon">🎾</div>
+        <div class="pet-action-name">逗逗</div>
+        <div class="pet-action-cd">${playCd||'+15 EXP'}</div>
+      </div>
+    </div>
+    <div class="pet-stats">
+      <div class="pet-stat-row" style="border-bottom:1px solid #f0f2f5;padding-bottom:6px;margin-bottom:4px">
+        <span class="pet-stat-icon">⚡</span>
+        <span class="pet-stat-label" style="flex:1;font-weight:600">今日金币</span>
+        <span class="pet-action-cd" style="color:var(--blue);cursor:pointer" onclick="openPetShop()">🏪 商店</span>
+      </div>
+      ${coinRows}
     </div>
   </div>`;
 }
 
-function initPVZ(){
+function initPet(){
   if(!S.pvz.todayChecked||S.pvz.lastCheckDate!==new Date().toISOString().slice(0,10)){
     S.pvz.todayChecked=true;
     S.pvz.lastCheckDate=new Date().toISOString().slice(0,10);
     save();
-    setTimeout(()=>toast('🧟 僵尸正在靠近！完成学习任务击退它们！'),500);
+    setTimeout(()=>toast('🐱 招招在等你呢！完成学习任务获得金币吧~'),500);
   }
 }
 
-function openShop(){
-  const p=S.pvz;
-  const totalDone=Object.values(S.subjects).reduce((s,sub)=>s+sub.tasks.filter(t=>t.done).length,0);
+function petInteract(type){
+  const pet=S.pvz.pet;
+  const now=Date.now();
+  const cfg={
+    pet:{cd:3600000,happiness:8,exp:5,msg:'🐱 招招很享受你的抚摸！+8开心 +5经验',field:'lastPet'},
+    wash:{cd:14400000,cleanliness:30,exp:10,msg:'🛁 招招洗得干干净净！+30清洁 +10经验',field:'lastWash'},
+    play:{cd:7200000,happiness:20,exp:15,msg:'🎾 招招玩得好开心！+20开心 +15经验',field:'lastPlay'}
+  }[type];
+  if(!cfg)return;
+  if(pet[cfg.field]){
+    const remain=cfg.cd-(now-parseInt(pet[cfg.field]));
+    if(remain>0){
+      const min=Math.ceil(remain/60000);
+      toast('⏰ 还需'+(min>=60?Math.ceil(min/60)+'小时':min+'分钟')+'才能再'+(type==='pet'?'摸摸':type==='wash'?'洗澡':'逗逗'));
+      return;
+    }
+  }
+  pet[cfg.field]=String(now);
+  if(cfg.happiness)pet.happiness=Math.min(100,pet.happiness+cfg.happiness);
+  if(cfg.cleanliness)pet.cleanliness=Math.min(100,pet.cleanliness+cfg.cleanliness);
+  pet.exp+=cfg.exp;
+  checkLevelUp();
+  save();render();
+  toast(cfg.msg);
+}
+
+function checkLevelUp(){
+  const pet=S.pvz.pet;
+  const need=pet.level*100;
+  if(pet.exp>=need){
+    pet.exp-=need;
+    pet.level++;
+    pet.hunger=Math.min(100,pet.hunger+20);
+    pet.happiness=Math.min(100,pet.happiness+20);
+    pet.cleanliness=Math.min(100,pet.cleanliness+20);
+    toast('🎉 招招升级了！Lv.'+pet.level+'！状态全部恢复！');
+  }
+}
+
+function openPetShop(){
   let shop='';
-  PLANT_DEFS.forEach(pl=>{
-    const owned=p.plants.some(x=>x.type===pl.type);
-    const locked=!owned&&totalDone<pl.unlock;
-    shop+=`<div class="pvz-shop-item${locked?' locked':''}${owned?' owned':''}" onclick="${locked?'':owned?'showPlantDetail(\''+pl.type+'\')':'buyPlant(\''+pl.type+'\')'}">
-      <div class="pvz-shop-emoji">${pl.emoji}</div>
-      <div class="pvz-shop-name">${pl.name}${owned?'✓':''}</div>
-      <div class="pvz-shop-desc">${pl.desc}</div>
-      <div class="pvz-shop-cost">${locked?`🔒需${pl.unlock}任务`:owned?'已拥有':`☀️${pl.cost}`}</div>
+  PET_SHOP.forEach(item=>{
+    shop+=`<div class="pet-shop-item" onclick="buyPetItem('${item.type}')">
+      <div class="pet-shop-emoji">${item.emoji}</div>
+      <div class="pet-shop-name">${item.name}</div>
+      <div class="pet-shop-desc">${item.desc}</div>
+      <div class="pet-shop-cost">💰${item.cost}</div>
     </div>`;
   });
-  document.getElementById('shopContent').innerHTML=shop;
+  document.getElementById('shopContent').innerHTML=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px">${shop}</div>`;
   document.getElementById('shopModal').classList.add('show');
 }
 
-function onCellClick(row,col){
-  const p=S.pvz;
-  if(p.plants.some(x=>x.row===row&&x.col===col)){toast('这里已经有植物了！');return;}
-  const owned=[...new Set(p.plants.map(x=>x.type))];
-  if(owned.length===0){toast('还没有植物！先打开商店购买吧~');openShop();return;}
-  const unplanted=PLANT_DEFS.filter(d=>owned.includes(d.type)&&!p.plants.some(x=>x.type===d.type&&x.row===row));
-  const allOwned=PLANT_DEFS.filter(d=>owned.includes(d.type));
-  if(unplanted.length===0&&allOwned.length>0){toast('所有植物都已种下啦！');return;}
-  const plantType=unplanted.length>0?unplanted[0].type:allOwned[0].type;
-  p.plants.push({type:plantType,row,col,planted:new Date().toISOString().slice(0,10)});
-  save();render('reward');
-  const pd=PLANT_DEFS.find(x=>x.type===plantType);
-  toast(`🌱种下了${pd?pd.name:'植物'}！`);
-}
-
-function buyPlant(type){
-  const pd=PLANT_DEFS.find(x=>x.type===type);
-  if(!pd)return;
-  const p=S.pvz;
-  if(p.plants.some(x=>x.type===type)){toast('已经拥有这个植物了！');return;}
-  const totalDone=Object.values(S.subjects).reduce((s,sub)=>s+sub.tasks.filter(t=>t.done).length,0);
-  if(totalDone<pd.unlock){toast(`🔒需要完成${pd.unlock}个任务才能解锁！`);return;}
-  if(p.sun<pd.cost){toast(`☀️阳光不足！需要${pd.cost}，当前${p.sun}`);return;}
-  p.sun-=pd.cost;
-  let planted=false;
-  for(let r=0;r<3;r++){
-    for(let c=1;c<=7;c++){
-      if(!p.plants.some(x=>x.row===r&&x.col===c)){
-        p.plants.push({type,row:r,col:c,planted:new Date().toISOString().slice(0,10)});
-        planted=true;break;
-      }
-    }
-    if(planted)break;
-  }
-  if(!planted)p.plants.push({type,row:0,col:1,planted:new Date().toISOString().slice(0,10)});
-  save();render('reward');closeModal('shopModal');
-  toast(`🎉购买了${pd.name}！${pd.emoji}`);
-}
-
-function showPlantDetail(type){
-  const pd=PLANT_DEFS.find(x=>x.type===type);
-  if(!pd)return;
-  document.getElementById('plantDetailEmoji').textContent=pd.emoji;
-  document.getElementById('plantDetailName').textContent=pd.name;
-  document.getElementById('plantDetailDesc').textContent=pd.desc+'·购买价格：☀️'+pd.cost;
-  document.getElementById('plantDetailModal').classList.add('show');
-}
-
-// ====== 僵尸位置更新 ======
-function updateZombies(){
-  const p=S.pvz;
-  const laneMap={yuwen:0,shuxue:1,yingyu:2};
-  Object.entries(S.subjects).forEach(([k,sub])=>{
-    const z=p.zombies.find(x=>x.lane===k);
-    if(!z)return;
-    if(z.frozen){z.frozen=false;return;}
-    const total=sub.tasks.length;
-    const done=sub.tasks.filter(t=>t.done).length;
-    if(done===total){
-      z.position=Math.max(0,z.position-1);
-      const row=laneMap[k];
-      const lanePlants=p.plants.filter(x=>x.row===row);
-      if(lanePlants.some(x=>x.type==='peashooter'))z.position=Math.max(0,z.position-1);
-      if(lanePlants.some(x=>x.type==='cherryBomb'))z.position=Math.max(0,z.position-3);
-    }else if(done===0){
-      z.position=Math.min(8,z.position+1);
-    }
-    if(z.position>=8){
-      const row=laneMap[k];
-      const lanePlants=p.plants.filter(x=>x.row===row);
-      if(lanePlants.some(x=>x.type==='wallnut')){
-        const wnIdx=p.plants.findIndex(x=>x.row===row&&x.type==='wallnut');
-        if(wnIdx>=0){p.plants.splice(wnIdx,1);toast('🥔坚果墙牺牲了，但保护了基地！');}
-        z.position=5;
-      }else if(p.baseHealth>0){
-        if(lanePlants.length>0){
-          const eaten=p.plants.findIndex(x=>x.row===row);
-          if(eaten>=0){p.plants.splice(eaten,1);toast('🧟僵尸吃掉了你的植物！');}
-        }else{
-          p.baseHealth--;
-          toast(`💔僵尸入侵基地！基地血量-1（剩余${p.baseHealth}）`);
-        }
-        z.position=5;
-      }
-      if(p.baseHealth<=0){toast('🏚️基地被攻破了...快完成任务重建防线吧！');p.baseHealth=1;}
-    }
-  });
+function buyPetItem(type){
+  const item=PET_SHOP.find(x=>x.type===type);
+  if(!item)return;
+  if(S.pvz.sun<item.cost){toast('💰 金币不足！需要'+item.cost+'，当前'+S.pvz.sun);return;}
+  S.pvz.sun-=item.cost;
+  // 合并到背包
+  const existing=S.pvz.inventory.find(x=>x.type===type);
+  if(existing)existing.count++;
+  else S.pvz.inventory.push({type,count:1});
   save();
+  toast('🛍️ 购买了'+item.name+'！'+item.emoji);
+  openPetShop(); // 刷新商店显示
 }
 
-function dailyPVZCheck(){
+function openInventory(){
+  const inv=S.pvz.inventory;
+  if(inv.length===0){
+    document.getElementById('invContent').innerHTML='<div style="text-align:center;color:var(--sub);padding:20px">背包是空的，去商店买点东西吧~</div>';
+  }else{
+    let html='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px">';
+    inv.forEach(i=>{
+      const item=PET_SHOP.find(x=>x.type===i.type);
+      if(!item)return;
+      html+=`<div class="pet-inv-item" onclick="usePetItem('${i.type}')">
+        <div class="pet-inv-emoji">${item.emoji}</div>
+        <div style="font-size:10px;font-weight:600">${item.name}</div>
+        <div class="pet-inv-count">${i.count}</div>
+      </div>`;
+    });
+    html+='</div>';
+    document.getElementById('invContent').innerHTML=html;
+  }
+  document.getElementById('invModal').classList.add('show');
+}
+
+function usePetItem(type){
+  const item=PET_SHOP.find(x=>x.type===type);
+  if(!item)return;
+  const invItem=S.pvz.inventory.find(x=>x.type===type);
+  if(!invItem||invItem.count<=0)return;
+  const pet=S.pvz.pet;
+  if(item.effect==='hunger'){pet.hunger=Math.min(100,pet.hunger+item.val);}
+  else if(item.effect==='happiness'){pet.happiness=Math.min(100,pet.happiness+item.val);}
+  else if(item.effect==='cleanliness'){pet.cleanliness=Math.min(100,pet.cleanliness+item.val);}
+  else if(item.effect==='both'){pet.hunger=Math.min(100,pet.hunger+item.val1);pet.happiness=Math.min(100,pet.happiness+item.val2);}
+  else if(item.effect==='exp'){pet.exp+=item.val;checkLevelUp();}
+  pet.exp+=5;checkLevelUp();
+  invItem.count--;
+  if(invItem.count<=0)S.pvz.inventory=S.pvz.inventory.filter(x=>x.type!==type);
+  save();render();
+  closeModal('invModal');
+  toast('😋 招招吃了'+item.name+'！'+item.desc);
+}
+
+function dailyPetCheck(){
   const p=S.pvz;
   const today=new Date().toISOString().slice(0,10);
   if(p.lastCheckDate===today)return;
   p.lastCheckDate=today;
-  p.plants.forEach(pl=>{
-    const pd=PLANT_DEFS.find(x=>x.type===pl.type);
-    if(pd&&pd.effect==='daily_sun')p.sun+=pd.effectVal;
-  });
-  if(p.plants.some(x=>x.type==='kernelpult')){
-    if(Math.random()<0.3){p.coins+=1;toast('🌽玉米投手发现了1枚金币！');}
-  }
+  const pet=p.pet;
+  pet.hunger=Math.max(0,pet.hunger-20);
+  pet.happiness=Math.max(0,pet.happiness-15);
+  pet.cleanliness=Math.max(0,pet.cleanliness-10);
   save();
 }
 
@@ -936,10 +915,10 @@ function toggleTask(id,k){
   const t=S.subjects[k].tasks.find(x=>x.id===id);
   if(t){
     t.done=!t.done;
-    if(t.done){t.streak=(t.streak||0)+1;S.pvz.sun+=50;toast('🎉完成任务+50☀️');}
-    else{t.streak=Math.max(0,(t.streak||0)-1);S.pvz.sun=Math.max(0,S.pvz.sun-50);toast('已取消完成');}
-    if(t.done&&t.streak>0&&t.streak%3===0){S.pvz.sun+=10;S.pvz.coins+=1;toast('🔥连续奖励+10☀️+1🪙');}
-    updateZombies();save();render();
+    if(t.done){t.streak=(t.streak||0)+1;S.pvz.sun+=10;toast('🎉完成任务+10💰');}
+    else{t.streak=Math.max(0,(t.streak||0)-1);S.pvz.sun=Math.max(0,S.pvz.sun-10);toast('已取消完成');}
+    if(t.done&&t.streak>0&&t.streak%3===0){S.pvz.sun+=5;toast('🔥连续奖励+5💰');}
+    save();render();
   }
 }
 function delTask(id,k){
@@ -1162,7 +1141,7 @@ document.getElementById('fab').onclick=function(){
     case 'errorbook':openErrorModal();break;
     case 'plan':openPlanModal();break;
     case 'reward':openAddReward();break;
-    case 'pvz':openShop();break;
+    case 'pvz':openPetShop();break;
     default:openAddTask('yuwen');
   }
 };
@@ -1182,7 +1161,7 @@ if('serviceWorker' in navigator){
 }
 
 // 启动
-dailyPVZCheck();
+dailyPetCheck();
 if(!S.sidebarItems||S.sidebarItems.length===0){S.sidebarItems=def.sidebarItems;S.sidebarNextId=def.sidebarNextId;}
 if(!S.rewards||S.rewards.length===0){S.rewards=def.rewards;S.rewardNextId=def.rewardNextId;}
 if(!S.rewardNextId)S.rewardNextId=def.rewardNextId;
