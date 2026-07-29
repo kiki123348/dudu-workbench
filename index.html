@@ -827,9 +827,9 @@ function petInteract(type){
   const pet=S.pvz.pet;
   const now=Date.now();
   const cfg={
-    pet:{cd:300000,happiness:8,exp:5,msg:'🐱 招招很享受你的抚摸！+8开心 +5经验',speak:'好舒服呀，谢谢你！'},
-    wash:{cd:300000,cleanliness:30,exp:10,msg:'🛁 招招洗得干干净净！+30清洁 +10经验',speak:'洗得好干净，太开心啦！'},
-    play:{cd:300000,happiness:20,exp:15,msg:'🎾 招招玩得好开心！+20开心 +15经验',speak:'真好玩！再陪我玩一会儿吧！'}
+    pet:{cd:300000,happiness:8,exp:5,msg:'🐱 招招很享受你的抚摸！+8开心 +5经验',speak:'喵~好舒服呀，谢谢主人！'},
+    wash:{cd:300000,cleanliness:30,exp:10,msg:'🛁 招招洗得干干净净！+30清洁 +10经验',speak:'喵喵！洗白白啦，好开心好开心！'},
+    play:{cd:300000,happiness:20,exp:15,msg:'🎾 招招玩得好开心！+20开心 +15经验',speak:'喵呜~真好玩！再陪我玩一会儿嘛！'}
   }[type];
   if(!cfg)return;
   if(pet[cfg.field]){
@@ -1222,8 +1222,8 @@ function speakText(text){
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);
   u.lang='zh-CN';
-  u.rate=0.9;
-  u.pitch=0.9;
+  u.rate=0.85;
+  u.pitch=1.6;
   u.volume=1;
   // 使用用户选择的语音
   const savedVoice=localStorage.getItem('dudu_voice');
