@@ -933,7 +933,19 @@ function usePetItem(type){
   if(invItem.count<=0)S.pvz.inventory=S.pvz.inventory.filter(x=>x.type!==type);
   save();render();
   closeModal('invModal');
-  toast('😋 招招吃了'+item.name+'！'+item.desc);
+  // 小猫反馈声音
+  const cat=item.cat||'';
+  if(cat==='food'||cat==='snack'){
+    toast('🐱 喵~'+item.emoji+' 太好吃啦！谢谢你！喵喵~');
+  }else if(cat==='toy'){
+    toast('🐱 喵呜~'+item.emoji+' 好好玩！喵喵喵~');
+  }else if(cat==='cloth'){
+    toast('🐱 喵~'+item.emoji+' 好漂亮！喵~谢谢！');
+  }else if(cat==='clean'){
+    toast('🐱 喵呜~'+item.emoji+' 好舒服！干干净净！');
+  }else{
+    toast('🐱 喵~'+item.emoji+' 谢谢！');
+  }
 }
 
 function dailyPetCheck(){
