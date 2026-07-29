@@ -1204,12 +1204,11 @@ function speakText(text){
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);
   u.lang='zh-CN';
-  u.rate=0.9;
-  u.pitch=1.4;
+  u.rate=0.95;
+  u.pitch=1.0;
   u.volume=1;
-  // 优先找北京普通话声音（Tingting是中文女声）
   const voices=speechSynthesis.getVoices();
-  const zhVoice=voices.find(v=>v.name.includes('Tingting')||v.name.includes('Ting-Ting')||(v.lang.startsWith('zh')&&v.name.includes('CN')));
+  const zhVoice=voices.find(v=>v.lang==='zh-CN')||voices.find(v=>v.lang.startsWith('zh'));
   if(zhVoice)u.voice=zhVoice;
   speechSynthesis.speak(u);
 }
