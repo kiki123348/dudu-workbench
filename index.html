@@ -199,7 +199,7 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 .pet-card.streak{background:linear-gradient(135deg,#ffebee,#fce4ec)}
 .pet-card.streak .pet-card-num{color:var(--red)}
 .pet-stage{background:linear-gradient(180deg,#e8f5e9,#c8e6c9);border-radius:var(--radius);padding:24px 16px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.pet-emoji{font-size:80px;animation:petBounce 2s ease-in-out infinite;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15))}
+.pet-emoji{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,0.15);animation:petBounce 2s ease-in-out infinite}
 .pet-name{font-size:22px;font-weight:700;color:#333;margin-top:8px}
 .pet-level{font-size:14px;color:#666;margin-top:4px}
 .pet-exp-bar{width:80%;height:8px;background:rgba(0,0,0,0.1);border-radius:4px;margin:10px auto 0;overflow:hidden}
@@ -739,7 +739,7 @@ function renderPVZ(){
       </div>
     </div>
     <div class="pet-stage">
-      <div class="pet-emoji">${pet.emoji}</div>
+      <img class="pet-emoji" src="pet.png" alt="招招">
       <div class="pet-name">${pet.name}</div>
       <div class="pet-level">Lv.${pet.level} · ${pet.exp}/${expNeed} EXP</div>
       <div class="pet-exp-bar"><div class="pet-exp-fill" style="width:${expPct}%"></div></div>
