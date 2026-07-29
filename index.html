@@ -1199,6 +1199,33 @@ function toast(m, speak){
   _toastTimer=setTimeout(()=>{t.classList.remove('show');_toastTimer=null;},2500);
   if(speak)speakText(speak);
 }
+// 语音调试：点5次标题打开语音选择面板
+let _debugClicks=0;
+document.querySelector('.sidebar-logo').onclick=function(){
+  _debugClicks++;
+  if(_debugClicks>=5){
+    _debugClicks=0;
+    showVoicePanel();
+  }
+  setTimeout(()=>{_debugClicks=0;},2000);
+};
+function showVoicePanel(){
+  const voices=speechSynthesis.getVoices();
+  const zhVoices=voices.filter(v=>v.lang.startsWith('zh'));
+  let html='<div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:999;background:rgba(0,0,0,0.8);overflow:auto;padding:20px;color:#fff;font-size:14px">';
+  html+='<h3 style="margin-bottom:12px">可用中文语音（点击选择）</h3>';
+  html+='<button onclick="this.parentElement.remove();speechSynthesis.cancel()" style="margin-bottom:12px;padding:8px 16px;border-radius:6px;border:none;background:#f56565;color:#fff;font-size:14px">关闭</button>';
+  html+='<p style="margin-bottom:8px;color:#aaa">当前默认: <b style="color:#ff0">'+((localStorage.getItem('dudu_voice')||'系统默认'))+'</b></p>';
+  zhVoices.forEach((v,i)=>{
+    html+='<div onclick="localStorage.setItem(\'dudu_voice\',\''+v.name.replace(/'/g,"\\'")+'\');speakText(\'你好，我是标准普通话测试\');this.parentElement.remove()" style="padding:10px;margin:6px 0;background:#333;border-radius:8px;cursor:pointer">';
+    html+='<b>'+v.name+'</b> <span style="color:#aaa">('+v.lang+')</span>';
+    html+='<br><span style="color:#8f8">local:'+v.localService+' default:'+v.default+'</span>';
+    html+='</div>';
+  });
+  if(zhVoices.length===0)html+='<p style="color:#f56565">未找到中文语音！请先点一下页面任意位置激活音频。</p>';
+  html+='</div>';
+  document.body.insertAdjacentHTML('beforeend',html);
+}
 function speakText(text){
   if(!window.speechSynthesis)return;
   speechSynthesis.cancel();
@@ -1207,6 +1234,13 @@ function speakText(text){
   u.rate=0.9;
   u.pitch=0.9;
   u.volume=1;
+  // 使用用户选择的语音
+  const savedVoice=localStorage.getItem('dudu_voice');
+  if(savedVoice){
+    const voices=speechSynthesis.getVoices();
+    const v=voices.find(x=>x.name===savedVoice);
+    if(v)u.voice=v;
+  }
   speechSynthesis.speak(u);
 }
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
