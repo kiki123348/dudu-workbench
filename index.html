@@ -460,7 +460,30 @@ function load(){
   return JSON.parse(JSON.stringify(def));
 }
 function save(){localStorage.setItem(K,JSON.stringify(S));}
+
+// 每日重置：跨天时把所有任务完成状态清空（streak保留）
+function dailyReset(){
+  const today=new Date().toISOString().slice(0,10);
+  const lastDate=localStorage.getItem('dudu_last_date');
+  if(lastDate&&lastDate!==today){
+    // 跨天了，重置所有任务done状态
+    Object.values(S.subjects).forEach(sub=>{
+      if(sub.tasks){
+        sub.tasks.forEach(t=>{
+          // 如果昨天没完成，streak清零；完成了的保留streak
+          if(!t.done&&t.streak>0)t.streak=0;
+          t.done=false;
+        });
+      }
+    });
+    toast('☀️ 新的一天，继续加油鸭！',false);
+  }
+  localStorage.setItem('dudu_last_date',today);
+}
+
 let S=load();
+dailyReset();
+save();
 let nid=500,curPage='workbench',curSubject=null,editErrId=null,editPlanId=null,editingTaskId=null,currentSubject='yuwen';
 const pageTitles={workbench:'嘟嘟暑假学习工作台',errorbook:'错题本',reward:'奖励中心',pvz:'云养宠物',vision:'视力训练',stats:'打卡统计',english:'每日英语',plan:'近期计划',docu:'纪录片'};
 
