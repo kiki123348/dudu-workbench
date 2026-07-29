@@ -1222,8 +1222,8 @@ function speakText(text){
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);
   u.lang='zh-CN';
-  u.rate=0.85;
-  u.pitch=1.6;
+  u.rate=0.8;
+  u.pitch=2.0;
   u.volume=1;
   // 使用用户选择的语音
   const savedVoice=localStorage.getItem('dudu_voice');
