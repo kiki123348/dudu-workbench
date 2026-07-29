@@ -1184,7 +1184,14 @@ function delPlan(id){if(!confirm('确定删除？'))return;S.plans=S.plans.filte
 
 // ====== 工具 ======
 function closeModal(id){document.getElementById(id).classList.remove('show');if(id==='taskModal')document.getElementById('taskSubject').disabled=false;}
-function toast(m, speak){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);if(speak)speakText(speak);}
+let _toastTimer=null;
+function toast(m, speak){
+  const t=document.getElementById('toast');
+  if(_toastTimer)clearTimeout(_toastTimer);
+  t.textContent=m;t.classList.add('show');
+  _toastTimer=setTimeout(()=>{t.classList.remove('show');_toastTimer=null;},2500);
+  if(speak)speakText(speak);
+}
 function speakText(text){
   if(!window.speechSynthesis)return;
   speechSynthesis.cancel();
