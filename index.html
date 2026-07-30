@@ -765,6 +765,12 @@ function renderPVZ(){
   const petCd=cdInfo(pet.lastPet,60000);
   const washCd=cdInfo(pet.lastWash,60000);
   const playCd=cdInfo(pet.lastPlay,60000);
+  const petCount=pet.petCount||0;
+  const washCount=pet.washCount||0;
+  const playCount=pet.playCount||0;
+  const petInfo=petCd?petCd:('还可'+(3-petCount)+'次');
+  const washInfo=washCd?washCd:('还可'+(3-washCount)+'次');
+  const playInfo=playCd?playCd:('还可'+(3-playCount)+'次');
 
   // 今日金币明细
   let coinRows='';
@@ -808,7 +814,7 @@ function renderPVZ(){
       <div class="pet-action${petCd?' disabled':''}" onclick="petInteract('pet')">
         <div class="pet-action-icon">🐱</div>
         <div class="pet-action-name">摸摸</div>
-        <div class="pet-action-cd">${petCd||'+5 EXP'}</div>
+        <div class="pet-action-cd">${petInfo}</div>
       </div>
       <div class="pet-action" onclick="openInventory()">
         <div class="pet-action-icon">🐟</div>
@@ -818,12 +824,12 @@ function renderPVZ(){
       <div class="pet-action${washCd?' disabled':''}" onclick="petInteract('wash')">
         <div class="pet-action-icon">🛁</div>
         <div class="pet-action-name">洗澡</div>
-        <div class="pet-action-cd">${washCd||'+10 EXP'}</div>
+        <div class="pet-action-cd">${washInfo}</div>
       </div>
       <div class="pet-action${playCd?' disabled':''}" onclick="petInteract('play')">
         <div class="pet-action-icon">🎾</div>
         <div class="pet-action-name">逗逗</div>
-        <div class="pet-action-cd">${playCd||'+15 EXP'}</div>
+        <div class="pet-action-cd">${playInfo}</div>
       </div>
     </div>
     <div class="pet-stats">
@@ -850,26 +856,43 @@ function petInteract(type){
   const pet=S.pvz.pet;
   const now=Date.now();
   const cfg={
-    pet:{cd:60000,field:'lastPet',happiness:8,exp:5,msg:'🐱 招招很享受你的抚摸！+8开心 +5经验',speak:'喵~好舒服呀，谢谢主人！'},
-    wash:{cd:60000,field:'lastWash',cleanliness:30,exp:10,msg:'🛁 招招洗得干干净净！+30清洁 +10经验',speak:'喵喵！洗白白啦，好开心好开心！'},
-    play:{cd:60000,field:'lastPlay',happiness:20,exp:15,msg:'🎾 招招玩得好开心！+20开心 +15经验',speak:'喵呜~真好玩！再陪我玩一会儿嘛！'}
+    pet:{cd:60000,field:'lastPet',countField:'petCount',happiness:8,exp:5,msg:'🐱 招招很享受你的抚摸！+8开心 +5经验',speak:'喵~好舒服呀，谢谢主人！',label:'摸摸'},
+    wash:{cd:60000,field:'lastWash',countField:'washCount',cleanliness:30,exp:10,msg:'🛁 招招洗得干干净净！+30清洁 +10经验',speak:'喵喵！洗白白啦，好开心好开心！',label:'洗澡'},
+    play:{cd:60000,field:'lastPlay',countField:'playCount',happiness:20,exp:15,msg:'🎾 招招玩得好开心！+20开心 +15经验',speak:'喵呜~真好玩！再陪我玩一会儿嘛！',label:'逗逗'}
   }[type];
   if(!cfg)return;
+  const maxCount=3;
+  // 初始化计数
+  if(pet[cfg.countField]===undefined)pet[cfg.countField]=0;
+  // 检查是否在冷却中
   if(pet[cfg.field]){
     const remain=cfg.cd-(now-parseInt(pet[cfg.field]));
     if(remain>0){
-      const min=Math.ceil(remain/60000);
-      toast('⏰ 还需'+(min>=60?Math.ceil(min/60)+'小时':min+'分钟')+'才能再'+(type==='pet'?'摸摸':type==='wash'?'洗澡':'逗逗'));
+      const sec=Math.ceil(remain/1000);
+      toast('⏰ 还需'+sec+'秒才能再'+cfg.label);
       return;
     }
+    // 冷却结束，重置计数
+    pet[cfg.countField]=0;
+    pet[cfg.field]='';
   }
-  pet[cfg.field]=String(now);
+  // 检查次数
+  if(pet[cfg.countField]>=maxCount){
+    // 已用完3次，开始冷却
+    pet[cfg.field]=String(now);
+    toast('⏰ '+cfg.label+'已用完3次，等1分钟后再来吧~');
+    save();render();
+    return;
+  }
+  // 执行互动
+  pet[cfg.countField]++;
   if(cfg.happiness)pet.happiness=Math.min(100,pet.happiness+cfg.happiness);
   if(cfg.cleanliness)pet.cleanliness=Math.min(100,pet.cleanliness+cfg.cleanliness);
   pet.exp+=cfg.exp;
   checkLevelUp();
   save();render();
-  toast(cfg.msg,cfg.speak);
+  const left=maxCount-pet[cfg.countField];
+  toast(cfg.msg+(left>0?'（还可'+left+'次）':'（本轮已用完）'),cfg.speak);
 }
 
 function checkLevelUp(){
