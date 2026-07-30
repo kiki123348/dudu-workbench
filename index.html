@@ -762,9 +762,9 @@ function renderPVZ(){
     const min=Math.ceil(remain/60000);
     return min>=60?Math.ceil(min/60)+'小时后':min+'分钟后';
   };
-  const petCd=cdInfo(pet.lastPet,300000);
-  const washCd=cdInfo(pet.lastWash,300000);
-  const playCd=cdInfo(pet.lastPlay,300000);
+  const petCd=cdInfo(pet.lastPet,60000);
+  const washCd=cdInfo(pet.lastWash,60000);
+  const playCd=cdInfo(pet.lastPlay,60000);
 
   // 今日金币明细
   let coinRows='';
@@ -850,9 +850,9 @@ function petInteract(type){
   const pet=S.pvz.pet;
   const now=Date.now();
   const cfg={
-    pet:{cd:300000,happiness:8,exp:5,msg:'🐱 招招很享受你的抚摸！+8开心 +5经验',speak:'喵~好舒服呀，谢谢主人！'},
-    wash:{cd:300000,cleanliness:30,exp:10,msg:'🛁 招招洗得干干净净！+30清洁 +10经验',speak:'喵喵！洗白白啦，好开心好开心！'},
-    play:{cd:300000,happiness:20,exp:15,msg:'🎾 招招玩得好开心！+20开心 +15经验',speak:'喵呜~真好玩！再陪我玩一会儿嘛！'}
+    pet:{cd:60000,field:'lastPet',happiness:8,exp:5,msg:'🐱 招招很享受你的抚摸！+8开心 +5经验',speak:'喵~好舒服呀，谢谢主人！'},
+    wash:{cd:60000,field:'lastWash',cleanliness:30,exp:10,msg:'🛁 招招洗得干干净净！+30清洁 +10经验',speak:'喵喵！洗白白啦，好开心好开心！'},
+    play:{cd:60000,field:'lastPlay',happiness:20,exp:15,msg:'🎾 招招玩得好开心！+20开心 +15经验',speak:'喵呜~真好玩！再陪我玩一会儿嘛！'}
   }[type];
   if(!cfg)return;
   if(pet[cfg.field]){
